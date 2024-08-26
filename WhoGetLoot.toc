@@ -3,7 +3,7 @@
 ## Notes: tells you who receive loot when in a raid.
 ## Title-zhCN:[团长工具] |CFFE66400谁获取了物品
 ## Notes-zhCN:|CFFDD66DDWhoGetLoot|R 记录谁获取了物品，建议团长使用
-## Author: 0.0.1 BIGJIM
+## Author: 0.0.1 BIGJIM https://github.com/BIGBIGJIM/WhoGetLoot
 ## DefaultState: disabled
 ## Dependencies:!Libs
 ## SavedVariablesPerCharacter: whoGetLoot_settings

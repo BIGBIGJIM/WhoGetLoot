@@ -6,5 +6,5 @@
 ## Author: 0.0.1 BIGJIM https://github.com/BIGBIGJIM/WhoGetLoot
 ## DefaultState: disabled
 ## Dependencies:!Libs
-## SavedVariablesPerCharacter: whoGetLoot_settings
+## SavedVariablesPerCharacter: whoGetLoot_settings, whoGetLoot_row_array
 WhoGetLoot.xml

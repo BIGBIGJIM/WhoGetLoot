@@ -88,6 +88,7 @@ function whoGetLoot_initialize()
   whoGetLoot_exportDKP:Hide()
   whoGetLoot_tips:Hide()
 
+  whoGetLoot_refresh_row_data()
 end
 
 function whoGetLoot_Message(msg)

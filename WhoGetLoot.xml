@@ -126,24 +126,58 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
+				<!-- remark -->
+				<FontString name="$parentRemark" inherits="GameFontHighlightSmall" justifyH="LEFT" text="">
+					<Size>
+						<AbsDimension x="90" y="14"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentDKP" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<!-- hight light -->
+			<Layer level="BACKGROUND">
+				<Texture name="$parentRowHightlight" file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar" alphaMode="ADD" hidden="true">
+						<Size>
+							<AbsDimension x="572" y="20"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT">
+								<Offset>
+									<AbsDimension x="0" y="-2"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+				</Texture>
 			</Layer>
 		</Layers>
 		<Frames>
 			<Button name="$parentSetDkpButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_SET_DKP" hidden="false">
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentDKP">
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentRemark">
 						<Offset>
 							<AbsDimension x="-4" y="0"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 				<Size>
-					<AbsDimension x="42" y="20"/>
+					<AbsDimension x="22" y="20"/>
 				</Size>
 				<Scripts>
 					<OnClick>
-								whoGetLoot_open_frame_setDKP("FrameListButton"..this:GetParent():GetID().."DataIndex")
+						whoGetLoot_open_frame_setDKP("FrameListButton"..this:GetParent():GetID().."DataIndex")
 					</OnClick>
+					<OnEnter>
+						whoGetLoot_row_hightLight_show("FrameListButton"..this:GetParent():GetID().."RowHightlight")
+					</OnEnter>
+					<OnLeave>
+						whoGetLoot_row_hightLight_hide("FrameListButton"..this:GetParent():GetID().."RowHightlight")
+					</OnLeave>
 				</Scripts>
 			</Button>
 			<Button name="$parentUpdateReceiverButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_UPDATE_RECEIVER" hidden="false">
@@ -155,12 +189,18 @@
 					</Anchor>
 				</Anchors>
 				<Size>
-					<AbsDimension x="80" y="20"/>
+					<AbsDimension x="22" y="20"/>
 				</Size>
 				<Scripts>
 					<OnClick>
-								whoGetLoot_update_receiver("FrameListButton"..this:GetParent():GetID().."DataIndex")
+						whoGetLoot_update_receiver("FrameListButton"..this:GetParent():GetID().."DataIndex")
 					</OnClick>
+					<OnEnter>
+						whoGetLoot_row_hightLight_show("FrameListButton"..this:GetParent():GetID().."RowHightlight")
+					</OnEnter>
+					<OnLeave>
+						whoGetLoot_row_hightLight_hide("FrameListButton"..this:GetParent():GetID().."RowHightlight")
+					</OnLeave>
 				</Scripts>
 			</Button>
 			<Button name="$parentDeleteDataButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_DELETE_DATA" hidden="false">
@@ -172,18 +212,24 @@
 					</Anchor>
 				</Anchors>
 				<Size>
-					<AbsDimension x="42" y="20"/>
+					<AbsDimension x="22" y="20"/>
 				</Size>
 				<Scripts>
 					<OnClick>
-								whoGetLoot_delete_data("FrameListButton"..this:GetParent():GetID().."DataIndex")
+						whoGetLoot_delete_data("FrameListButton"..this:GetParent():GetID().."DataIndex")
 					</OnClick>
+					<OnEnter>
+						whoGetLoot_row_hightLight_show("FrameListButton"..this:GetParent():GetID().."RowHightlight")
+					</OnEnter>
+					<OnLeave>
+						whoGetLoot_row_hightLight_hide("FrameListButton"..this:GetParent():GetID().."RowHightlight")
+					</OnLeave>
 				</Scripts>
 			</Button>
 		</Frames>
-		<HighlightTexture	 file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar" alphaMode="ADD" justifyH="LEFT">
+		<!-- <HighlightTexture name="$parentRowHightLight"	file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar" alphaMode="ADD" justifyH="LEFT">
 			<Size>
-				<AbsDimension x="482" y="20"/>
+				<AbsDimension x="572" y="20"/>
 			</Size>
 			<Anchors>
 				<Anchor point="LEFT">
@@ -192,7 +238,7 @@
 					</Offset>
 				</Anchor>
 			</Anchors>
-		</HighlightTexture>
+		</HighlightTexture> -->
 		<Scripts>
 			<OnClick>
 					local compentName = "FrameListButton"..this:GetID().."Loot"
@@ -202,6 +248,12 @@
 						SetItemRef(link, "", "LeftButton")
 					end
 			</OnClick>
+			<OnEnter>
+				whoGetLoot_row_hightLight_show("FrameListButton"..this:GetID().."RowHightlight")
+			</OnEnter>
+			<OnLeave>
+				whoGetLoot_row_hightLight_hide("FrameListButton"..this:GetID().."RowHightlight")
+			</OnLeave>
 		</Scripts>
 	</Button>
 
@@ -236,6 +288,15 @@
 						<Anchor point="TOP" relativePoint="TOP" relativeTo="whoGetLoot_main">
 							<Offset>
 								<AbsDimension x="0" y="-10"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentVersion" inherits="GameFontNormal" text="WHOGETLOOT_VERSION" justifyH="CENTER" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentTitle">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
 							</Offset>
 						</Anchor>
 					</Anchors>
@@ -406,7 +467,6 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-									XySortOptions("xy");
 					</OnClick>
 					<OnLoad>
 									WhoFrameColumn_SetWidth(150, this);
@@ -423,14 +483,13 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-									XySortOptions("dkp");
 					</OnClick>
 					<OnLoad>
 									WhoFrameColumn_SetWidth(60, this);
 					</OnLoad>
 				</Scripts>
 			</Button>
-			<Button name="FrameColumnHeader5" inherits="ColumnHeaderTemplate" text="WHOGETLOOT_BUTTON_HEADER_OPERATION">
+			<Button name="FrameColumnHeader5" inherits="ColumnHeaderTemplate" text="WHOGETLOOT_BUTTON_HEADER_REMARK">
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="FrameColumnHeader4" relativePoint="RIGHT">
 						<Offset>
@@ -442,7 +501,23 @@
 					<OnClick>
 					</OnClick>
 					<OnLoad>
-									WhoFrameColumn_SetWidth(170, this);
+									WhoFrameColumn_SetWidth(90, this);
+					</OnLoad>
+				</Scripts>
+			</Button>
+			<Button name="FrameColumnHeader6" inherits="ColumnHeaderTemplate" text="WHOGETLOOT_BUTTON_HEADER_OPERATION">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="FrameColumnHeader5" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="-2" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+					</OnClick>
+					<OnLoad>
+									WhoFrameColumn_SetWidth(80, this);
 					</OnLoad>
 				</Scripts>
 			</Button>
@@ -895,7 +970,7 @@
 	<!-- setDKP frame -->
 	<Frame name="whoGetLoot_setDKP" parent="UIParent" hidden="true" movable="true" enableMouse="True" frameStrata="DIALOG">
 		<Size>
-			<AbsDimension x="220" y="140"/>
+			<AbsDimension x="220" y="160"/>
 		</Size>
 		<Anchors>
 			<Anchor point="TOPLEFT"/>
@@ -918,7 +993,7 @@
 
 		<Layers>
 			<Layer level="BACKGROUND">
-				<FontString name="$parentTitle" inherits="GameFontNormal" text="WHOGETLOOT_BUTTON_SET_DKP" justifyH="LEFT" justifyV="TOP">
+				<FontString name="$parentTitle" inherits="GameFontNormal" text="WHOGETLOOT_BUTTON_SET_DKP_FRAME_TITLE" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeTo="whoGetLoot_setDKP" relativePoint="TOPLEFT">
 							<Offset>
@@ -991,6 +1066,15 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
+				<FontString name="$parentRemarkTitle" inherits="GameFontNormal" text="WHOGETLOOT_BUTTON_SET_DKP_REMARK_TITLE" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentDKPTitle" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-4"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
 			</Layer>
 		</Layers>
 
@@ -1013,7 +1097,22 @@
 				</Anchors>
 				<Scripts>
 					<OnEnterPressed>
-									whoGetLoot_dkp_confirm()
+					</OnEnterPressed>
+				</Scripts>
+			</EditBox>
+			<EditBox name="$parentRemarkEditBox" inherits="InputBoxTemplate" letters="6" autoFocus="false">
+				<Size>
+					<AbsDimension x="130" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentRemarkTitle" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="10" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnEnterPressed>
 					</OnEnterPressed>
 				</Scripts>
 			</EditBox>
@@ -1238,7 +1337,7 @@
 	<!-- data add frame -->
 	<Frame name="whoGetLoot_dataAdd" parent="UIParent" hidden="true" movable="true" enableMouse="True" frameStrata="DIALOG">
 		<Size>
-			<AbsDimension x="220" y="140"/>
+			<AbsDimension x="220" y="160"/>
 		</Size>
 		<Anchors>
 			<Anchor point="TOPLEFT"/>
@@ -1324,6 +1423,15 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
+				<FontString name="$parentRemarkTitle" inherits="GameFontNormal" text="WHOGETLOOT_BUTTON_DATA_ADD_REMARK_TITLE" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentDKPTitle" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-4"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
 			</Layer>
 		</Layers>
 
@@ -1355,6 +1463,22 @@
 				</Size>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parentDKPTitle" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="10" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnEnterPressed>
+					</OnEnterPressed>
+				</Scripts>
+			</EditBox>
+			<EditBox name="$parentRemarkEditBox" inherits="InputBoxTemplate" letters="6" autoFocus="false">
+				<Size>
+					<AbsDimension x="130" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentRemarkTitle" relativePoint="RIGHT">
 						<Offset>
 							<AbsDimension x="10" y="0"/>
 						</Offset>
@@ -1398,5 +1522,110 @@
 			</OnDragStop>
 		</Scripts>
 	</Frame>
+
+	<!-- clear data tips frame -->
+	<Frame name="whoGetLoot_dataClearTips" parent="UIParent" hidden="true" movable="true" enableMouse="True" frameStrata="DIALOG">
+		<Size>
+			<AbsDimension x="320" y="140"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPLEFT"/>
+			<Offset>
+				<AbsDimension x="200" y="200"/>
+			</Offset>
+		</Anchors>
+
+		<Backdrop name="$parentBackdrop" bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+			<EdgeSize>
+				<AbsValue val="16"/>
+			</EdgeSize>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<BackgroundInsets>
+				<AbsInset left="5" right="5" top="5" bottom="5"/>
+			</BackgroundInsets>
+		</Backdrop>
+
+		<Layers>
+			<Layer level="BACKGROUND">
+				<FontString name="$parentTitle" inherits="GameFontNormal" text="WHOGETLOOT_BUTTON_DATA_CLEAR_TITLE" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="whoGetLoot_dataClearTips" relativePoint="TOPLEFT">
+							<Offset>
+								<AbsDimension x="10" y="-10"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentTimeTitle" inherits="GameFontNormal" text="WHOGETLOOT_BUTTON_DATA_CLEAR_CONTENT" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="whoGetLoot_dataClearTipsTitle" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-14"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Frames>
+			<Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="whoGetLoot_dataClearTips" relativePoint="TOPRIGHT"/>
+				</Anchors>
+			</Button>
+			<Button name="$parentDataClearConfirmButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_CONFIRM">
+				<Anchors>
+					<Anchor point="BOTTOM" relativePoint="BOTTOM" relativeTo="whoGetLoot_dataClearTips">
+						<Offset>
+							<AbsDimension x="-40" y="10"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="70" y="20"/>
+				</Size>
+				<Scripts>
+					<OnClick>
+						whoGetLoot_clear_tips_clear_confirm()
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentDataClearCancelButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_CANCEL">
+				<Anchors>
+					<Anchor point="BOTTOM" relativePoint="BOTTOM" relativeTo="whoGetLoot_dataClearTips">
+						<Offset>
+							<AbsDimension x="40" y="10"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="70" y="20"/>
+				</Size>
+				<Scripts>
+					<OnClick>
+						whoGetLoot_clear_tips_hide()
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				this:RegisterForDrag("LeftButton");
+				this:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b);
+				this:SetBackdropBorderColor(DEFAULT_CHATFRAME_COLOR.r, DEFAULT_CHATFRAME_COLOR.g, DEFAULT_CHATFRAME_COLOR.b);
+				this:Show();
+			</OnLoad>
+			<OnDragStart>
+				this:StartMoving();
+			</OnDragStart>
+			<OnDragStop>
+				this:StopMovingOrSizing();
+			</OnDragStop>
+		</Scripts>
+	</Frame>
+	
 
 </Ui>

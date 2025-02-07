@@ -63,6 +63,9 @@ function whoGetLoot_OnEvent()
 
   if event == "CHAT_MSG_SYSTEM" and arg1 == WHOGETLOOT_MSG_SYSTEM_MESSAGE_LEAVE then
     whoGetLoot_stop_listen()
+    if whoGetLoot_row_total > 200 then
+      whoGetLoot_clear_tips_show()
+    end
   end
 end
 
@@ -89,6 +92,7 @@ function whoGetLoot_initialize()
   whoGetLoot_exportDKP:Hide()
   whoGetLoot_tips:Hide()
   whoGetLoot_dataAdd:Hide()
+  whoGetLoot_dataClearTips:Hide()
 end
 
 function whoGetLoot_Message(msg)
@@ -131,6 +135,7 @@ function whoGetLoot_open_frame_dataAdd()
           whoGetLoot_dataAddNameContent:SetText(unitName)
           whoGetLoot_dataAddLootEditBox:SetText("")
           whoGetLoot_dataAddDKPEditBox:SetText(0)
+          whoGetLoot_dataAddRemarkEditBox:SetText("")
           whoGetLoot_dataAdd:Show()
           break
         end
@@ -148,6 +153,7 @@ function whoGetLoot_open_frame_setDKP(dataIndex)
     whoGetLoot_setDKPNameContent:SetText(row[WHOGETLOOT_KEY_ROLE_NAME])
     whoGetLoot_setDKPLootContent:SetText(row[WHOGETLOOT_KEY_LOOT])
     whoGetLoot_setDKPDKPEditBox:SetText(row[WHOGETLOOT_KEY_DKP])
+    whoGetLoot_setDKPRemarkEditBox:SetText(row[WHOGETLOOT_KEY_REMARK])
     whoGetLoot_setDKP:Show()
   end
 end
@@ -193,6 +199,7 @@ function whoGetLoot_refresh_row_data()
     getglobal("FrameListButton" .. j .. "Name"):SetText(row[WHOGETLOOT_KEY_ROLE_NAME]);
     getglobal("FrameListButton" .. j .. "Loot"):SetText(row[WHOGETLOOT_KEY_LOOT]);
     getglobal("FrameListButton" .. j .. "DKP"):SetText(row[WHOGETLOOT_KEY_DKP]);
+    getglobal("FrameListButton" .. j .. "Remark"):SetText(row[WHOGETLOOT_KEY_REMARK]);
     getglobal("FrameListButton" .. j .. "SetDkpButton"):Show();
     getglobal("FrameListButton" .. j):Show();
     j = j + 1
@@ -243,6 +250,7 @@ function whoGetLoot_do_loot_message_handle(message, pattern, pattern2)
     rowInfo[WHOGETLOOT_KEY_ROLE_NAME] = player
     rowInfo[WHOGETLOOT_KEY_LOOT] = lootInfo
     rowInfo[WHOGETLOOT_KEY_DKP] = 0
+    rowInfo[WHOGETLOOT_KEY_REMARK] = ""
     table.insert(whoGetLoot_row_array, rowInfo)
     whoGetLoot_refresh_row_data()
   end
@@ -281,8 +289,10 @@ end
 function whoGetLoot_dkp_confirm()
   local rowIndex = whoGetLoot_setDKPDataIndex:GetText()
   local ponit = whoGetLoot_setDKPDKPEditBox:GetText()
+  local remark = whoGetLoot_setDKPRemarkEditBox:GetText()
   local row = whoGetLoot_row_array[tonumber(rowIndex)]
   row[WHOGETLOOT_KEY_DKP] = tonumber(ponit)
+  row[WHOGETLOOT_KEY_REMARK] = remark
   whoGetLoot_refresh_row_data()
   whoGetLoot_setDKP:Hide()
   if (GetNumRaidMembers() > 0) then
@@ -294,16 +304,18 @@ end
 
 function whoGetLoot_export_csv_data()
   local csvText = WHOGETLOOT_BUTTON_HEADER_TIME ..
-  "," ..
-  WHOGETLOOT_BUTTON_HEADER_NAME ..
-  "," .. WHOGETLOOT_BUTTON_HEADER_LOOT .. "," .. WHOGETLOOT_BUTTON_HEADER_DKP .. WHOGETLOOT_MSG_NEW_LINE
+  "," .. WHOGETLOOT_BUTTON_HEADER_NAME ..
+  "," .. WHOGETLOOT_BUTTON_HEADER_LOOT ..
+  "," .. WHOGETLOOT_BUTTON_HEADER_DKP ..
+  "," .. WHOGETLOOT_BUTTON_HEADER_REMARK .. WHOGETLOOT_MSG_NEW_LINE
   for i = 1, whoGetLoot_row_total do
     local row = whoGetLoot_row_array[i]
     csvText = csvText ..
     row[WHOGETLOOT_KEY_TIME] ..
-    "," ..
-    row[WHOGETLOOT_KEY_ROLE_NAME] ..
-    "," .. row[WHOGETLOOT_KEY_LOOT] .. "," .. row[WHOGETLOOT_KEY_DKP] .. WHOGETLOOT_MSG_NEW_LINE
+    "," .. row[WHOGETLOOT_KEY_ROLE_NAME] ..
+    "," .. row[WHOGETLOOT_KEY_LOOT] ..
+    "," .. row[WHOGETLOOT_KEY_DKP] ..
+    "," .. row[WHOGETLOOT_KEY_REMARK] .. WHOGETLOOT_MSG_NEW_LINE
   end
   getglobal("whoGetLoot_exportDKPExportEdit"):SetText(csvText);
   getglobal("whoGetLoot_exportDKP"):Show();
@@ -342,12 +354,14 @@ function whoGetLoot_data_add_confirm()
     local nowTime = whoGetLoot_dataAddTimeContent:GetText()
     local player = whoGetLoot_dataAddNameContent:GetText()
     local dkp = whoGetLoot_dataAddDKPEditBox:GetText()
-    
+    local remark = whoGetLoot_dataAddRemarkEditBox:GetText()
+
     local rowInfo = {}
     rowInfo[WHOGETLOOT_KEY_TIME] = nowTime
     rowInfo[WHOGETLOOT_KEY_ROLE_NAME] = player
     rowInfo[WHOGETLOOT_KEY_LOOT] = lootInfo
     rowInfo[WHOGETLOOT_KEY_DKP] = 0
+    rowInfo[WHOGETLOOT_KEY_REMARK] = remark
     if not (dkp == nil or dkp == "") then
       rowInfo[WHOGETLOOT_KEY_DKP] = tonumber(dkp)
     end
@@ -368,4 +382,27 @@ function whoGetLoot_delete_data(dataIndex)
     end
     whoGetLoot_refresh_row_data()
   end
+end
+
+function whoGetLoot_clear_tips_show()
+  whoGetLoot_dataClearTips:Show()
+end
+
+function whoGetLoot_clear_tips_hide()
+  whoGetLoot_dataClearTips:Hide()
+end
+
+function whoGetLoot_clear_tips_clear_confirm()
+  whoGetLoot_row_data_clear()
+  whoGetLoot_dataClearTips:Hide()
+end
+
+function whoGetLoot_row_hightLight_show(hightLightName)
+  local highlightTexture = getglobal(hightLightName)
+  highlightTexture:Show()
+end
+
+function whoGetLoot_row_hightLight_hide(hightLightName)
+  local highlightTexture = getglobal(hightLightName)
+  highlightTexture:Hide()
 end

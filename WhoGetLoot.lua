@@ -830,7 +830,6 @@ end
 function whoGetLoot_clock_in_player_status_toggle(buttonId)
   if whoGetLoot_raid_table_hightlight_selected_index > 0 then
     local detailBUtton = getglobal("PartyFrameData"..buttonId)
-    print(detailBUtton:GetText())
     if detailBUtton:GetText() ~= "" and detailBUtton:GetText() ~= nil then
       local hightLightId = whoGetLoot_raid_table_hightlight_selected_index
       local dataIdTextName = "ClockInFrameListButton"..hightLightId.."DataIndex"

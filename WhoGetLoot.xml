@@ -69,7 +69,7 @@
 	<!-- DATA ROW Templates-->
 	<Button name="ListButtonTemplate" virtual="true" hidden="true">
 		<Size>
-			<AbsDimension x="612" y="20"/>
+			<AbsDimension x="672" y="20"/>
 		</Size>
 		<Layers>
 			<Layer level="BORDER">
@@ -103,7 +103,7 @@
 				<!-- loot -->
 				<FontString name="$parentLoot" inherits="GameFontHighlightSmall" justifyH="LEFT" text="">
 					<Size>
-						<AbsDimension x="150" y="20"/>
+						<AbsDimension x="140" y="20"/>
 					</Size>
 					<Anchors>
 						<Anchor point="LEFT" relativeTo="$parentName" relativePoint="RIGHT">
@@ -116,7 +116,7 @@
 				<!-- dkp -->
 				<FontString name="$parentDKP" inherits="GameFontHighlightSmall" justifyH="CENTER" text="">
 					<Size>
-						<AbsDimension x="60" y="14"/>
+						<AbsDimension x="60" y="20"/>
 					</Size>
 					<Anchors>
 						<Anchor point="LEFT" relativeTo="$parentLoot" relativePoint="RIGHT">
@@ -126,13 +126,26 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
-				<!-- remark -->
-				<FontString name="$parentRemark" inherits="GameFontHighlightSmall" justifyH="LEFT" text="">
+				<!-- effect dkp flag -->
+				<FontString name="$parentEffectDkpFlag" inherits="GameFontHighlightSmall" justifyH="LEFT" text="">
 					<Size>
-						<AbsDimension x="90" y="14"/>
+						<AbsDimension x="70" y="20"/>
 					</Size>
 					<Anchors>
 						<Anchor point="LEFT" relativeTo="$parentDKP" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<!-- remark -->
+				<FontString name="$parentRemark" inherits="GameFontHighlightSmall" justifyH="LEFT" text="">
+					<Size>
+						<AbsDimension x="130" y="20"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentEffectDkpFlag" relativePoint="RIGHT">
 							<Offset>
 								<AbsDimension x="0" y="0"/>
 							</Offset>
@@ -144,7 +157,7 @@
 			<Layer level="BACKGROUND">
 				<Texture name="$parentRowHightlight" file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar" alphaMode="ADD" hidden="true">
 						<Size>
-							<AbsDimension x="572" y="20"/>
+							<AbsDimension x="672" y="20"/>
 						</Size>
 						<Anchors>
 							<Anchor point="LEFT">
@@ -257,10 +270,260 @@
 		</Scripts>
 	</Button>
 
+	<!-- CLOCK IN  DATA ROW Templates-->
+	<Button name="ClockInListButtonTemplate" virtual="true" hidden="true">
+		<Size>
+			<AbsDimension x="672" y="20"/>
+		</Size>
+		<Layers>
+			<Layer level="BORDER">
+				<FontString name="$parentDataIndex" inherits="GameFontHighlightSmall" text="" hidden="true"/>
+				<!-- time -->
+				<FontString name="$parentTime" inherits="GameFontHighlightSmall" justifyH="LEFT" text="">
+					<Size>
+						<AbsDimension x="160" y="20"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-3"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<!-- total -->
+				<FontString name="$parentTotal" inherits="GameFontNormalSmall" justifyH="CENTER" text="">
+					<Size>
+						<AbsDimension x="60" y="20"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentTime" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<!-- remark -->
+				<FontString name="$parentRemark" inherits="GameFontHighlightSmall" justifyH="LEFT" text="">
+					<Size>
+						<AbsDimension x="480" y="20"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentTotal" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<!-- hight light -->
+			<Layer level="BACKGROUND">
+				<Texture name="$parentRowHightlight" file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar" alphaMode="ADD" hidden="true">
+						<Size>
+							<AbsDimension x="710" y="20"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT">
+								<Offset>
+									<AbsDimension x="0" y="-2"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="$parentRemarkDataButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_REMARK_DATA" hidden="false">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentRemark">
+						<Offset>
+							<AbsDimension x="-4" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="22" y="20"/>
+				</Size>
+				<Scripts>
+					<OnClick>
+						whoGetLoot_clock_in_remark_open_frame("ClockInFrameListButton"..this:GetParent():GetID().."DataIndex")
+					</OnClick>
+					<OnEnter>
+					</OnEnter>
+					<OnLeave>
+					</OnLeave>
+				</Scripts>
+			</Button>
+			<Button name="$parentDeleteDataButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_DELETE_DATA" hidden="false">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentRemarkDataButton">
+						<Offset>
+							<AbsDimension x="4" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="22" y="20"/>
+				</Size>
+				<Scripts>
+					<OnClick>
+						whoGetLoot_chock_in_delete_data("ClockInFrameListButton"..this:GetParent():GetID().."DataIndex")
+					</OnClick>
+					<OnEnter>
+					</OnEnter>
+					<OnLeave>
+					</OnLeave>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnClick>
+					whoGetLoot_raid_detail_table_toggle(this:GetID(), "ClockInFrameListButton"..this:GetID().."DataIndex")
+			</OnClick>
+			<OnEnter>
+			</OnEnter>
+			<OnLeave>
+			</OnLeave>
+		</Scripts>
+	</Button>
+
+	<!-- Party Header Templates -->
+	<Button name="PartyHeaderTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="10" y="24"/>
+		</Size>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentLeft" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+					<Size>
+						<AbsDimension x="5" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+					</Anchors>
+					<TexCoords left="0" right="0.078125" top="0" bottom="0.75"/>
+				</Texture>
+				<Texture name="$parentMiddle" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+					<Size>
+						<AbsDimension x="53" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+					</Anchors>
+					<TexCoords left="0.078125" right="0.90625" top="0" bottom="0.75"/>
+				</Texture>
+				<Texture name="$parentRight" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+					<Size>
+						<AbsDimension x="4" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentMiddle" relativePoint="RIGHT"/>
+					</Anchors>
+					<TexCoords left="0.90625" right="0.96875" top="0" bottom="0.75"/>
+				</Texture>
+				<Texture name="$parentBottom" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+                <Size>
+                    <AbsDimension x="62" y="2"/> 
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOMLEFT"/>
+                    <Anchor point="BOTTOMRIGHT"/>
+                </Anchors>
+                <TexCoords left="0" right="1" top="0" bottom="0.0625"/> 
+            </Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnClick>
+
+			</OnClick>
+			<OnLoad>
+							WhoFrameColumn_SetWidth(95, this);
+			</OnLoad>
+		</Scripts>
+		<NormalText inherits="GameFontHighlightSmall">
+			<Anchors>
+				<Anchor point="CENTER">
+					<Offset>
+						<AbsDimension x="0" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</NormalText>
+	</Button>
+
+	<!-- Party Cell Templates -->
+	<Button name="PartyCellTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="10" y="24"/>
+		</Size>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentLeft" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+					<Size>
+						<AbsDimension x="5" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+					</Anchors>
+					<TexCoords left="0" right="0.078125" top="0" bottom="0.75"/>
+				</Texture>
+				<Texture name="$parentMiddle" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+					<Size>
+						<AbsDimension x="53" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+					</Anchors>
+					<TexCoords left="0.078125" right="0.90625" top="0" bottom="0.75"/>
+				</Texture>
+				<Texture name="$parentRight" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+					<Size>
+						<AbsDimension x="4" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentMiddle" relativePoint="RIGHT"/>
+					</Anchors>
+					<TexCoords left="0.90625" right="0.96875" top="0" bottom="0.75"/>
+				</Texture>
+				<Texture name="$parentBottom" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+                <Size>
+                    <AbsDimension x="62" y="2"/> 
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOMLEFT"/>
+                    <Anchor point="BOTTOMRIGHT"/>
+                </Anchors>
+                <TexCoords left="0" right="1" top="0" bottom="0.0625"/> 
+            </Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnClick>
+							whoGetLoot_clock_in_player_status_toggle(this:GetID())
+			</OnClick>
+			<OnLoad>
+							WhoFrameColumn_SetWidth(95, this);
+			</OnLoad>
+		</Scripts>
+		<NormalText inherits="GameFontHighlightSmall">
+			<Anchors>
+				<Anchor point="CENTER">
+					<Offset>
+						<AbsDimension x="0" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</NormalText>
+	</Button>
+
+
 	<!-- Main frame -->
 	<Frame name="whoGetLoot_main" parent="UIParent" hidden="true" movable="true" enableMouse="True" frameStrata="HIGH">
 		<Size>
-			<AbsDimension x="660" y="540"/>
+			<AbsDimension x="770" y="570"/>
 		</Size>
 		<Anchors>
 			<Anchor point="TOPLEFT"/>
@@ -282,54 +545,6 @@
 		</Backdrop>
 
 		<Layers>
-			<Layer level="BACKGROUND">
-				<FontString name="$parentTitle" inherits="GameFontNormal" text="WHOGETLOOT_LABEL" justifyH="CENTER" justifyV="TOP">
-					<Anchors>
-						<Anchor point="TOP" relativePoint="TOP" relativeTo="whoGetLoot_main">
-							<Offset>
-								<AbsDimension x="0" y="-10"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-				<FontString name="$parentVersion" inherits="GameFontNormal" text="WHOGETLOOT_VERSION" justifyH="CENTER" justifyV="TOP">
-					<Anchors>
-						<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentTitle">
-							<Offset>
-								<AbsDimension x="0" y="0"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-				<FontString name="$parentStatusText" inherits="GameFontNormal" text="WHOGETLOOT_LABEL_CURRENT_STATUS" justifyH="LEFT" justifyV="TOP">
-					<Anchors>
-						<Anchor point="LEFT" relativePoint="TOPLEFT" relativeTo="whoGetLoot_main">
-							<Offset>
-								<AbsDimension x="15" y="-60"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-				<FontString name="$parentStatusInfo" inherits="GameFontNormal" text="" justifyH="LEFT" justifyV="TOP">
-					<Anchors>
-						<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentStatusText">
-							<Offset>
-								<AbsDimension x="6" y="0"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-
-				<FontString name="$parentPageInfo" inherits="GameFontNormal" text="WHOGETLOOT_LABEL_DEFAULT_PAGE_INFO" justifyH="LEFT" justifyV="BOTTOM">
-					<Anchors>
-						<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" relativeTo="whoGetLoot_main">
-							<Offset>
-								<AbsDimension x="10" y="10"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-			</Layer>
 		</Layers>
 
 		<Frames>
@@ -338,405 +553,1464 @@
 					<Anchor point="TOPRIGHT" relativeTo="whoGetLoot_main" relativePoint="TOPRIGHT"/>
 				</Anchors>
 			</Button>
-			<Button name="$parentOptionButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_OPTIONS">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="whoGetLoot_main">
-						<Offset>
-							<AbsDimension x="10" y="-30"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
+			<Frame name="whoGetLoot_main_TitlePanel" parent="whoGetLoot_main" tile="true">
 				<Size>
-					<AbsDimension x="70" y="20"/>
+					<AbsDimension x="670" y="20"/>
 				</Size>
-				<Scripts>
-					<OnClick>
-						whoGetLoot_toggle_option()
-					</OnClick>
-				</Scripts>
-			</Button>
-			<Button name="$parentClearButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_CLEAR">
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentOptionButton">
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT"  relativeTo="whoGetLoot_main">
 						<Offset>
 							<AbsDimension x="0" y="0"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
-				<Size>
-					<AbsDimension x="70" y="20"/>
-				</Size>
-				<Scripts>
-					<OnClick>
-						whoGetLoot_row_data_clear()
-					</OnClick>
-				</Scripts>
-			</Button>
-			<Button name="$parentExportButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_EXPORT_CSV">
-				<Anchors>
-					<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" relativeTo="whoGetLoot_main">
-						<Offset>
-							<AbsDimension x="-10" y="-30"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Size>
-					<AbsDimension x="100" y="20"/>
-				</Size>
-				<Scripts>
-					<OnClick>
-						whoGetLoot_export_csv_data()
-					</OnClick>
-				</Scripts>
-			</Button>
-			<Button name="$parentDataAddButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_DATA_ADD">
-				<Anchors>
-					<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentExportButton">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Size>
-					<AbsDimension x="100" y="20"/>
-				</Size>
-				<Scripts>
-					<OnClick>
-						whoGetLoot_open_frame_dataAdd()
-					</OnClick>
-				</Scripts>
-			</Button>
-			<Button name="$parentTpisButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_TIPS">
-				<Anchors>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentExportButton">
-						<Offset>
-							<AbsDimension x="0" y="-2"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Size>
-					<AbsDimension x="100" y="20"/>
-				</Size>
-				<Scripts>
-					<OnClick>
-						whoGetLoot_toggle_tips()
-					</OnClick>
-				</Scripts>
-			</Button>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<FontString name="$parentTitle" inherits="GameFontNormal" text="WHOGETLOOT_LABEL" justifyH="CENTER" justifyV="TOP">
+							<Anchors>
+								<Anchor point="TOP" relativePoint="TOP" relativeTo="whoGetLoot_main">
+									<Offset>
+										<AbsDimension x="0" y="-10"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentVersion" inherits="GameFontNormal" text="WHOGETLOOT_VERSION" justifyH="CENTER" justifyV="TOP">
+							<Anchors>
+								<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentTitle">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
 
-			<!-- header -->
-			<Button name="FrameColumnHeader1" inherits="ColumnHeaderTemplate" text="WHOGETLOOT_BUTTON_HEADER_TIME">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="whoGetLoot_main" relativePoint="TOPLEFT">
-						<Offset>
-							<AbsDimension x="8" y="-70"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
+				</Frames>
 				<Scripts>
-					<OnClick>
-					</OnClick>
 					<OnLoad>
-									WhoFrameColumn_SetWidth(160, this);
+						this:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b);
+						this:SetBackdropBorderColor(RED_FONT_COLOR.r, RED_FONT_COLOR.g, RED_FONT_COLOR.b);				
 					</OnLoad>
 				</Scripts>
-			</Button>
-			<Button name="FrameColumnHeader2" inherits="ColumnHeaderTemplate" text="WHOGETLOOT_BUTTON_HEADER_NAME">
+			</Frame>
+			<Frame name="whoGetLoot_main_TabPanel" parent="whoGetLoot_main" tile="true">
+				<Size>
+					<AbsDimension x="660" y="30"/>
+				</Size>
 				<Anchors>
-					<Anchor point="LEFT" relativeTo="FrameColumnHeader1" relativePoint="RIGHT">
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT"  relativeTo="whoGetLoot_main_TitlePanel">
 						<Offset>
-							<AbsDimension x="-2" y="0"/>
+							<AbsDimension x="5" y="0"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
+				
+				<Frames>
+					<Button name="$parentLootTabButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_LOOT_TAB">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="whoGetLoot_main_TabPanel">
+								<Offset>
+									<AbsDimension x="5" y="-5"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="70" y="20"/>
+						</Size>
+						<Scripts>
+							<OnClick>
+								whoGetLoot_select_tab("whoGetLoot_main_LootPanel")
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="$parentSettlementTabButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_SETTLEMENT_TAB">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentLootTabButton">
+								<Offset>
+									<AbsDimension x="5" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="70" y="20"/>
+						</Size>
+						<Scripts>
+							<OnClick>
+								whoGetLoot_select_tab("whoGetLoot_main_SettlementPanel")
+							</OnClick>
+						</Scripts>
+					</Button>
+				</Frames>
 				<Scripts>
-					<OnClick>
-					</OnClick>
 					<OnLoad>
-									WhoFrameColumn_SetWidth(112, this);
+						this:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b);
+						this:SetBackdropBorderColor(RED_FONT_COLOR.r, RED_FONT_COLOR.g, RED_FONT_COLOR.b);				
 					</OnLoad>
 				</Scripts>
-			</Button>
-			<Button name="FrameColumnHeader3" inherits="ColumnHeaderTemplate" text="WHOGETLOOT_BUTTON_HEADER_LOOT">
+			</Frame>
+			<Frame name="whoGetLoot_main_LootPanel" parent="whoGetLoot_main" tile="true">
+				<Size>
+					<AbsDimension x="760" y="520"/>
+				</Size>
 				<Anchors>
-					<Anchor point="LEFT" relativeTo="FrameColumnHeader2" relativePoint="RIGHT">
-						<Offset>
-							<AbsDimension x="-2" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-					</OnClick>
-					<OnLoad>
-									WhoFrameColumn_SetWidth(150, this);
-					</OnLoad>
-				</Scripts>
-			</Button>
-			<Button name="FrameColumnHeader4" inherits="ColumnHeaderTemplate" text="WHOGETLOOT_BUTTON_HEADER_DKP">
-				<Anchors>
-					<Anchor point="LEFT" relativeTo="FrameColumnHeader3" relativePoint="RIGHT">
-						<Offset>
-							<AbsDimension x="-2" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-					</OnClick>
-					<OnLoad>
-									WhoFrameColumn_SetWidth(60, this);
-					</OnLoad>
-				</Scripts>
-			</Button>
-			<Button name="FrameColumnHeader5" inherits="ColumnHeaderTemplate" text="WHOGETLOOT_BUTTON_HEADER_REMARK">
-				<Anchors>
-					<Anchor point="LEFT" relativeTo="FrameColumnHeader4" relativePoint="RIGHT">
-						<Offset>
-							<AbsDimension x="-2" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-					</OnClick>
-					<OnLoad>
-									WhoFrameColumn_SetWidth(90, this);
-					</OnLoad>
-				</Scripts>
-			</Button>
-			<Button name="FrameColumnHeader6" inherits="ColumnHeaderTemplate" text="WHOGETLOOT_BUTTON_HEADER_OPERATION">
-				<Anchors>
-					<Anchor point="LEFT" relativeTo="FrameColumnHeader5" relativePoint="RIGHT">
-						<Offset>
-							<AbsDimension x="-2" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-					</OnClick>
-					<OnLoad>
-									WhoFrameColumn_SetWidth(80, this);
-					</OnLoad>
-				</Scripts>
-			</Button>
-			<!-- data row -->
-			<Button name="FrameListButton1" inherits="ListButtonTemplate" id="1">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="FrameColumnHeader1" relativePoint="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="0" y="-2"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="FrameListButton2" inherits="ListButtonTemplate" id="2">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="FrameListButton1" relativePoint="BOTTOMLEFT">
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="whoGetLoot_main_TabPanel">
 						<Offset>
 							<AbsDimension x="0" y="0"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
-			</Button>
-			<Button name="FrameListButton3" inherits="ListButtonTemplate" id="3">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="FrameListButton2" relativePoint="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="FrameListButton4" inherits="ListButtonTemplate" id="4">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="FrameListButton3" relativePoint="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="FrameListButton5" inherits="ListButtonTemplate" id="5">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="FrameListButton4" relativePoint="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="FrameListButton6" inherits="ListButtonTemplate" id="6">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="FrameListButton5" relativePoint="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="FrameListButton7" inherits="ListButtonTemplate" id="7">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="FrameListButton6" relativePoint="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="FrameListButton8" inherits="ListButtonTemplate" id="8">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="FrameListButton7" relativePoint="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="FrameListButton9" inherits="ListButtonTemplate" id="9">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="FrameListButton8" relativePoint="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="FrameListButton10" inherits="ListButtonTemplate" id="10">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="FrameListButton9" relativePoint="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="FrameListButton11" inherits="ListButtonTemplate" id="11">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="FrameListButton10" relativePoint="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="FrameListButton12" inherits="ListButtonTemplate" id="12">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="FrameListButton11" relativePoint="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="FrameListButton13" inherits="ListButtonTemplate" id="13">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="FrameListButton12" relativePoint="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="FrameListButton14" inherits="ListButtonTemplate" id="14">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="FrameListButton13" relativePoint="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="FrameListButton15" inherits="ListButtonTemplate" id="15">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="FrameListButton14" relativePoint="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="FrameListButton16" inherits="ListButtonTemplate" id="16">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="FrameListButton15" relativePoint="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="FrameListButton17" inherits="ListButtonTemplate" id="17">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="FrameListButton16" relativePoint="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="FrameListButton18" inherits="ListButtonTemplate" id="18">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="FrameListButton17" relativePoint="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="FrameListButton19" inherits="ListButtonTemplate" id="19">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="FrameListButton18" relativePoint="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="FrameListButton20" inherits="ListButtonTemplate" id="20">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="FrameListButton19" relativePoint="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
+				<Backdrop name="$parentBackdrop" bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					<EdgeSize>
+						<AbsValue val="16"/>
+					</EdgeSize>
+					<TileSize>
+						<AbsValue val="32"/>
+					</TileSize>
+					<BackgroundInsets>
+						<AbsInset left="5" right="5" top="5" bottom="5"/>
+					</BackgroundInsets>
+				</Backdrop>
 
-			<Button name="$parentNextButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_NEXT_PAGE">
-				<Anchors>
-					<Anchor point="RIGHT" relativePoint="BOTTOMRIGHT" relativeTo="whoGetLoot_main">
-						<Offset>
-							<AbsDimension x="-8" y="16"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Size>
-					<AbsDimension x="80" y="20"/>
-				</Size>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<FontString name="$parentStatusText" inherits="GameFontNormal" text="WHOGETLOOT_LABEL_CURRENT_STATUS" justifyH="LEFT" justifyV="TOP">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="TOPLEFT" relativeTo="whoGetLoot_main_LootPanel">
+									<Offset>
+										<AbsDimension x="15" y="-45"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentStatusInfo" inherits="GameFontNormal" text="" justifyH="LEFT" justifyV="TOP">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentStatusText">
+									<Offset>
+										<AbsDimension x="6" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+
+						<FontString name="$parentPageInfo" inherits="GameFontNormal" text="WHOGETLOOT_LABEL_LOOT_DEFAULT_PAGE_INFO" justifyH="LEFT" justifyV="BOTTOM">
+						<Anchors>
+							<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" relativeTo="whoGetLoot_main_LootPanel">
+								<Offset>
+									<AbsDimension x="10" y="10"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<Button name="$parentOptionButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_OPTIONS">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="whoGetLoot_main_LootPanel">
+								<Offset>
+									<AbsDimension x="10" y="-10"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="70" y="20"/>
+						</Size>
+						<Scripts>
+							<OnClick>
+								whoGetLoot_toggle_option()
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="$parentClearButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_CLEAR">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentOptionButton">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="70" y="20"/>
+						</Size>
+						<Scripts>
+							<OnClick>
+								whoGetLoot_row_data_clear()
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="$parentExportButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_EXPORT_CSV">
+						<Anchors>
+							<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" relativeTo="whoGetLoot_main_LootPanel">
+								<Offset>
+									<AbsDimension x="-10" y="-10"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="100" y="20"/>
+						</Size>
+						<Scripts>
+							<OnClick>
+								whoGetLoot_export_loot_csv_data()
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="$parentDataAddButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_DATA_ADD">
+						<Anchors>
+							<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentExportButton">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="100" y="20"/>
+						</Size>
+						<Scripts>
+							<OnClick>
+								whoGetLoot_open_frame_dataAdd()
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="$parentTpisButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_TIPS">
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentExportButton">
+								<Offset>
+									<AbsDimension x="0" y="-2"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="100" y="20"/>
+						</Size>
+						<Scripts>
+							<OnClick>
+								whoGetLoot_toggle_tips()
+							</OnClick>
+						</Scripts>
+					</Button>
+
+					<!-- header -->
+					<Button name="FrameColumnHeader1" inherits="ColumnHeaderTemplate" text="WHOGETLOOT_BUTTON_HEADER_TIME">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="whoGetLoot_main_LootPanel" relativePoint="TOPLEFT">
+								<Offset>
+									<AbsDimension x="8" y="-55"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+							</OnClick>
+							<OnLoad>
+											WhoFrameColumn_SetWidth(160, this);
+							</OnLoad>
+						</Scripts>
+					</Button>
+					<Button name="FrameColumnHeader2" inherits="ColumnHeaderTemplate" text="WHOGETLOOT_BUTTON_HEADER_NAME">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="FrameColumnHeader1" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="-2" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+							</OnClick>
+							<OnLoad>
+											WhoFrameColumn_SetWidth(112, this);
+							</OnLoad>
+						</Scripts>
+					</Button>
+					<Button name="FrameColumnHeader3" inherits="ColumnHeaderTemplate" text="WHOGETLOOT_BUTTON_HEADER_LOOT">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="FrameColumnHeader2" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="-2" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+							</OnClick>
+							<OnLoad>
+											WhoFrameColumn_SetWidth(140, this);
+							</OnLoad>
+						</Scripts>
+					</Button>
+					<Button name="FrameColumnHeader4" inherits="ColumnHeaderTemplate" text="WHOGETLOOT_BUTTON_HEADER_DKP">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="FrameColumnHeader3" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="-2" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+							</OnClick>
+							<OnLoad>
+											WhoFrameColumn_SetWidth(60, this);
+							</OnLoad>
+						</Scripts>
+					</Button>
+					<Button name="FrameColumnHeader5" inherits="ColumnHeaderTemplate" text="WHOGETLOOT_BUTTON_HEADER_EFFECT_DKP_FLAG">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="FrameColumnHeader4" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="-2" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+							</OnClick>
+							<OnLoad>
+											WhoFrameColumn_SetWidth(70, this);
+							</OnLoad>
+						</Scripts>
+					</Button>
+					<Button name="FrameColumnHeader6" inherits="ColumnHeaderTemplate" text="WHOGETLOOT_BUTTON_HEADER_LOOT_REMARK">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="FrameColumnHeader5" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="-2" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+							</OnClick>
+							<OnLoad>
+											WhoFrameColumn_SetWidth(130, this);
+							</OnLoad>
+						</Scripts>
+					</Button>
+					<Button name="FrameColumnHeader7" inherits="ColumnHeaderTemplate" text="WHOGETLOOT_BUTTON_HEADER_OPERATION">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="FrameColumnHeader6" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="-2" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+							</OnClick>
+							<OnLoad>
+											WhoFrameColumn_SetWidth(80, this);
+							</OnLoad>
+						</Scripts>
+					</Button>
+					<!-- data row -->
+					<Button name="FrameListButton1" inherits="ListButtonTemplate" id="1">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="FrameColumnHeader1" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="-2"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="FrameListButton2" inherits="ListButtonTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="FrameListButton1" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="FrameListButton3" inherits="ListButtonTemplate" id="3">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="FrameListButton2" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="FrameListButton4" inherits="ListButtonTemplate" id="4">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="FrameListButton3" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="FrameListButton5" inherits="ListButtonTemplate" id="5">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="FrameListButton4" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="FrameListButton6" inherits="ListButtonTemplate" id="6">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="FrameListButton5" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="FrameListButton7" inherits="ListButtonTemplate" id="7">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="FrameListButton6" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="FrameListButton8" inherits="ListButtonTemplate" id="8">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="FrameListButton7" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="FrameListButton9" inherits="ListButtonTemplate" id="9">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="FrameListButton8" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="FrameListButton10" inherits="ListButtonTemplate" id="10">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="FrameListButton9" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="FrameListButton11" inherits="ListButtonTemplate" id="11">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="FrameListButton10" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="FrameListButton12" inherits="ListButtonTemplate" id="12">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="FrameListButton11" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="FrameListButton13" inherits="ListButtonTemplate" id="13">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="FrameListButton12" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="FrameListButton14" inherits="ListButtonTemplate" id="14">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="FrameListButton13" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="FrameListButton15" inherits="ListButtonTemplate" id="15">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="FrameListButton14" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="FrameListButton16" inherits="ListButtonTemplate" id="16">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="FrameListButton15" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="FrameListButton17" inherits="ListButtonTemplate" id="17">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="FrameListButton16" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="FrameListButton18" inherits="ListButtonTemplate" id="18">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="FrameListButton17" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="FrameListButton19" inherits="ListButtonTemplate" id="19">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="FrameListButton18" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="FrameListButton20" inherits="ListButtonTemplate" id="20">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="FrameListButton19" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+
+					<Button name="$parentNextButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_NEXT_PAGE">
+						<Anchors>
+							<Anchor point="RIGHT" relativePoint="BOTTOMRIGHT" relativeTo="whoGetLoot_main_LootPanel">
+								<Offset>
+									<AbsDimension x="-8" y="16"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="80" y="20"/>
+						</Size>
+						<Scripts>
+							<OnClick>
+									whoGetLoot_loot_next_page()
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="$parentPreviousButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_PREVIOUS_PAGE">
+						<Anchors>
+							<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentNextButton">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="80" y="20"/>
+						</Size>
+						<Scripts>
+							<OnClick>
+									whoGetLoot_loot_previous_page()
+							</OnClick>
+						</Scripts>
+					</Button>
+				</Frames>
 				<Scripts>
-					<OnClick>
-							whoGetLoot_next_page()
-					</OnClick>
+					<OnLoad>
+						this:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b);
+						this:SetBackdropBorderColor(RED_FONT_COLOR.r, RED_FONT_COLOR.g, RED_FONT_COLOR.b);				
+					</OnLoad>
 				</Scripts>
-			</Button>
-			<Button name="$parentPreviousButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_PREVIOUS_PAGE">
+			</Frame>
+			<Frame name="whoGetLoot_main_SettlementPanel" parent="whoGetLoot_main" tile="true" hidden="true">
+				<Size>
+					<AbsDimension x="760" y="515"/>
+				</Size>
 				<Anchors>
-					<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentNextButton">
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="whoGetLoot_main_TabPanel">
 						<Offset>
 							<AbsDimension x="0" y="0"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
-				<Size>
-					<AbsDimension x="80" y="20"/>
-				</Size>
+				<Backdrop name="$parentBackdrop" bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					<EdgeSize>
+						<AbsValue val="16"/>
+					</EdgeSize>
+					<TileSize>
+						<AbsValue val="32"/>
+					</TileSize>
+					<BackgroundInsets>
+						<AbsInset left="5" right="5" top="5" bottom="5"/>
+					</BackgroundInsets>
+				</Backdrop>
+
+				<Frames>
+					<Button name="$parentClockInButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_CLOCK_IN">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="whoGetLoot_main_SettlementPanel">
+								<Offset>
+									<AbsDimension x="10" y="-10"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="70" y="20"/>
+						</Size>
+						<Scripts>
+							<OnClick>
+								whoGetLoot_chock_in()
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="$parentClearButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_CLEAR">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentClockInButton">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="70" y="20"/>
+						</Size>
+						<Scripts>
+							<OnClick>
+								whoGetLoot_clock_in_clear()
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="$parentSettlementButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_SETTLEMENT">
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentClockInButton">
+								<Offset>
+									<AbsDimension x="0" y="-2"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="70" y="20"/>
+						</Size>
+						<Scripts>
+							<OnClick>
+								whoGetLoot_export_settlement_data()
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="$parentExportClockInButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_EXPORT_CLOCK_IN">
+						<Anchors>
+							<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" relativeTo="whoGetLoot_main_SettlementPanel">
+								<Offset>
+									<AbsDimension x="-10" y="-10"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="100" y="20"/>
+						</Size>
+						<Scripts>
+							<OnClick>
+								whoGetLoot_export_clock_in_data()
+							</OnClick>
+						</Scripts>
+					</Button>
+
+					<Frame name="whoGetLoot_main_clockIn_table_frame" parent="whoGetLoot_main_SettlementPanel" tile="true" >
+						<Size>
+							<AbsDimension x="760" y="270"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="whoGetLoot_main_SettlementPanel">
+								<Offset>
+									<AbsDimension x="0" y="-50"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Backdrop name="$parentBackdrop" bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+							<EdgeSize>
+								<AbsValue val="16"/>
+							</EdgeSize>
+							<TileSize>
+								<AbsValue val="32"/>
+							</TileSize>
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5"/>
+							</BackgroundInsets>
+						</Backdrop>
+						<Layers>
+							<Layer level="BACKGROUND">
+								<FontString name="$parentPageInfo" inherits="GameFontNormal" text="WHOGETLOOT_LABEL_SETTLEMENT_DEFAULT_PAGE_INFO" justifyH="LEFT" justifyV="BOTTOM">
+									<Anchors>
+										<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" relativeTo="whoGetLoot_main_clockIn_table_frame">
+											<Offset>
+												<AbsDimension x="10" y="10"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Frames>
+							<!-- header -->
+							<Button name="ClockInFrameColumnHeader1" inherits="ColumnHeaderTemplate" text="WHOGETLOOT_BUTTON_HEADER_TIME">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="whoGetLoot_main_clockIn_table_frame" relativePoint="TOPLEFT">
+										<Offset>
+											<AbsDimension x="8" y="-6"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnClick>
+									</OnClick>
+									<OnLoad>
+													WhoFrameColumn_SetWidth(160, this);
+									</OnLoad>
+								</Scripts>
+							</Button>
+							<Button name="ClockInFrameColumnHeader2" inherits="ColumnHeaderTemplate" text="WHOGETLOOT_BUTTON_TOTAL">
+								<Anchors>
+									<Anchor point="LEFT" relativeTo="ClockInFrameColumnHeader1" relativePoint="RIGHT">
+										<Offset>
+											<AbsDimension x="-2" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnClick>
+									</OnClick>
+									<OnLoad>
+													WhoFrameColumn_SetWidth(60, this);
+									</OnLoad>
+								</Scripts>
+							</Button>
+							<Button name="ClockInFrameColumnHeader3" inherits="ColumnHeaderTemplate" text="WHOGETLOOT_BUTTON_HEADER_SETTLEMENT_REMARK">
+								<Anchors>
+									<Anchor point="LEFT" relativeTo="ClockInFrameColumnHeader2" relativePoint="RIGHT">
+										<Offset>
+											<AbsDimension x="-2" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnClick>
+									</OnClick>
+									<OnLoad>
+													WhoFrameColumn_SetWidth(480, this);
+									</OnLoad>
+								</Scripts>
+							</Button>
+							<Button name="ClockInFrameColumnHeader4" inherits="ColumnHeaderTemplate" text="WHOGETLOOT_BUTTON_HEADER_OPERATION">
+								<Anchors>
+									<Anchor point="LEFT" relativeTo="ClockInFrameColumnHeader3" relativePoint="RIGHT">
+										<Offset>
+											<AbsDimension x="-2" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								<Scripts>
+									<OnClick>
+									</OnClick>
+									<OnLoad>
+													WhoFrameColumn_SetWidth(50, this);
+									</OnLoad>
+								</Scripts>
+							</Button>
+							<!-- data row -->
+							<Button name="ClockInFrameListButton1" inherits="ClockInListButtonTemplate" id="1">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="ClockInFrameColumnHeader1" relativePoint="BOTTOMLEFT">
+										<Offset>
+											<AbsDimension x="0" y="-2"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="ClockInFrameListButton2" inherits="ClockInListButtonTemplate" id="2">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="ClockInFrameListButton1" relativePoint="BOTTOMLEFT">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="ClockInFrameListButton3" inherits="ClockInListButtonTemplate" id="3">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="ClockInFrameListButton2" relativePoint="BOTTOMLEFT">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="ClockInFrameListButton4" inherits="ClockInListButtonTemplate" id="4">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="ClockInFrameListButton3" relativePoint="BOTTOMLEFT">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="ClockInFrameListButton5" inherits="ClockInListButtonTemplate" id="5">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="ClockInFrameListButton4" relativePoint="BOTTOMLEFT">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="ClockInFrameListButton6" inherits="ClockInListButtonTemplate" id="6">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="ClockInFrameListButton5" relativePoint="BOTTOMLEFT">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="ClockInFrameListButton7" inherits="ClockInListButtonTemplate" id="7">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="ClockInFrameListButton6" relativePoint="BOTTOMLEFT">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="ClockInFrameListButton8" inherits="ClockInListButtonTemplate" id="8">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="ClockInFrameListButton7" relativePoint="BOTTOMLEFT">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="ClockInFrameListButton9" inherits="ClockInListButtonTemplate" id="9">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="ClockInFrameListButton8" relativePoint="BOTTOMLEFT">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Button>
+							<Button name="ClockInFrameListButton10" inherits="ClockInListButtonTemplate" id="10">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="ClockInFrameListButton9" relativePoint="BOTTOMLEFT">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</Button>
+
+							<Button name="$parentNextButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_NEXT_PAGE">
+								<Anchors>
+									<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="whoGetLoot_main_clockIn_table_frame">
+										<Offset>
+											<AbsDimension x="-10" y="10"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								<Size>
+									<AbsDimension x="80" y="20"/>
+								</Size>
+								<Scripts>
+									<OnClick>
+											whoGetLoot_chock_in_next_page()
+									</OnClick>
+								</Scripts>
+							</Button>
+							<Button name="$parentPreviousButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_PREVIOUS_PAGE">
+								<Anchors>
+									<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentNextButton">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								<Size>
+									<AbsDimension x="80" y="20"/>
+								</Size>
+								<Scripts>
+									<OnClick>
+											whoGetLoot_chock_in_previous_page()
+									</OnClick>
+								</Scripts>
+							</Button>
+						</Frames>
+						<Scripts>
+							<OnLoad>
+								this:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b);
+								this:SetBackdropBorderColor(RED_FONT_COLOR.r, RED_FONT_COLOR.g, RED_FONT_COLOR.b);				
+							</OnLoad>
+						</Scripts>
+					</Frame>
+					<Frame name="whoGetLoot_main_raid_table_frame" parent="whoGetLoot_main_SettlementPanel" tile="true" >
+						<Size>
+							<AbsDimension x="760" y="200"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="whoGetLoot_main_clockIn_table_frame">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Backdrop name="$parentBackdrop" bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+							<EdgeSize>
+								<AbsValue val="16"/>
+							</EdgeSize>
+							<TileSize>
+								<AbsValue val="32"/>
+							</TileSize>
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5"/>
+							</BackgroundInsets>
+						</Backdrop>
+						<Layers>
+							<Layer level="BACKGROUND">
+								<FontString name="$parentLeftTipsText" inherits="GameFontNormal" text="WHOGETLOOT_LABEL_SELLEMENT_TIPS_MESSAGE_1" justifyH="LEFT" justifyV="TOP">
+									<Anchors>
+										<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" relativeTo="whoGetLoot_main_raid_table_frame">
+											<Offset>
+												<AbsDimension x="10" y="10"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+								</FontString>
+								<FontString name="$parentRightTipsText" inherits="GameFontNormal" text="WHOGETLOOT_LABEL_SELLEMENT_TIPS_MESSAGE_2" justifyH="LEFT" justifyV="TOP">
+									<Anchors>
+										<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="whoGetLoot_main_raid_table_frame">
+											<Offset>
+												<AbsDimension x="-10" y="10"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+									<Color r="1" g="0" b="0" />
+								</FontString>
+							</Layer>
+						</Layers>
+						<Frames>
+							<!-- header -->
+							<Button name="PartyFrameColumnHeader1" inherits="PartyHeaderTemplate" text="WHOGETLOOT_BUTTON_PARTY_1">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="whoGetLoot_main_raid_table_frame" relativePoint="TOPLEFT">
+										<Offset>
+											<AbsDimension x="6" y="-10"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameColumnHeader2" inherits="PartyHeaderTemplate" text="WHOGETLOOT_BUTTON_PARTY_2">
+								<Anchors>
+									<Anchor point="LEFT" relativeTo="PartyFrameColumnHeader1" relativePoint="RIGHT">
+										<Offset>
+											<AbsDimension x="-2" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameColumnHeader3" inherits="PartyHeaderTemplate" text="WHOGETLOOT_BUTTON_PARTY_3">
+								<Anchors>
+									<Anchor point="LEFT" relativeTo="PartyFrameColumnHeader2" relativePoint="RIGHT">
+										<Offset>
+											<AbsDimension x="-2" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameColumnHeader4" inherits="PartyHeaderTemplate" text="WHOGETLOOT_BUTTON_PARTY_4">
+								<Anchors>
+									<Anchor point="LEFT" relativeTo="PartyFrameColumnHeader3" relativePoint="RIGHT">
+										<Offset>
+											<AbsDimension x="-2" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameColumnHeader5" inherits="PartyHeaderTemplate" text="WHOGETLOOT_BUTTON_PARTY_5">
+								<Anchors>
+									<Anchor point="LEFT" relativeTo="PartyFrameColumnHeader4" relativePoint="RIGHT">
+										<Offset>
+											<AbsDimension x="-2" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameColumnHeader6" inherits="PartyHeaderTemplate" text="WHOGETLOOT_BUTTON_PARTY_6">
+								<Anchors>
+									<Anchor point="LEFT" relativeTo="PartyFrameColumnHeader5" relativePoint="RIGHT">
+										<Offset>
+											<AbsDimension x="-2" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameColumnHeader7" inherits="PartyHeaderTemplate" text="WHOGETLOOT_BUTTON_PARTY_7">
+								<Anchors>
+									<Anchor point="LEFT" relativeTo="PartyFrameColumnHeader6" relativePoint="RIGHT">
+										<Offset>
+											<AbsDimension x="-2" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameColumnHeader8" inherits="PartyHeaderTemplate" text="WHOGETLOOT_BUTTON_PARTY_8">
+								<Anchors>
+									<Anchor point="LEFT" relativeTo="PartyFrameColumnHeader7" relativePoint="RIGHT">
+										<Offset>
+											<AbsDimension x="-2" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<!-- data -->
+							<Button name="PartyFrameData1" inherits="PartyCellTemplate" id="1">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameColumnHeader1" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData2" inherits="PartyCellTemplate" id="2">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData1" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData3" inherits="PartyCellTemplate" id="3">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData2" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData4" inherits="PartyCellTemplate" id="4">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData3" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData5" inherits="PartyCellTemplate" id="5">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData4" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+
+							<Button name="PartyFrameData6" inherits="PartyCellTemplate" id="6">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameColumnHeader2" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData7" inherits="PartyCellTemplate" id="7">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData6" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData8" inherits="PartyCellTemplate" id="8">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData7" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData9" inherits="PartyCellTemplate" id="9">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData8" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData10" inherits="PartyCellTemplate" id="10">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData9" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+
+							<Button name="PartyFrameData11" inherits="PartyCellTemplate" id="11">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameColumnHeader3" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData12" inherits="PartyCellTemplate" id="12">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData11" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData13" inherits="PartyCellTemplate" id="13">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData12" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData14" inherits="PartyCellTemplate" id="14">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData13" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData15" inherits="PartyCellTemplate" id="15">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData14" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+
+							<Button name="PartyFrameData16" inherits="PartyCellTemplate" id="16">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameColumnHeader4" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData17" inherits="PartyCellTemplate" id="17">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData16" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData18" inherits="PartyCellTemplate" id="18">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData17" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData19" inherits="PartyCellTemplate" id="19">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData18" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData20" inherits="PartyCellTemplate" id="20">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData19" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+
+							<Button name="PartyFrameData21" inherits="PartyCellTemplate" id="21">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameColumnHeader5" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData22" inherits="PartyCellTemplate" id="22">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData21" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData23" inherits="PartyCellTemplate" id="23">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData22" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData24" inherits="PartyCellTemplate" id="24">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData23" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData25" inherits="PartyCellTemplate" id="25">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData24" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+
+							<Button name="PartyFrameData26" inherits="PartyCellTemplate" id="26">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameColumnHeader6" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData27" inherits="PartyCellTemplate" id="27">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData26" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData28" inherits="PartyCellTemplate" id="28">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData27" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData29" inherits="PartyCellTemplate" id="29">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData28" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData30" inherits="PartyCellTemplate" id="30">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData29" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+
+							<Button name="PartyFrameData31" inherits="PartyCellTemplate" id="31">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameColumnHeader7" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData32" inherits="PartyCellTemplate" id="32">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData31" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData33" inherits="PartyCellTemplate" id="33">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData32" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData34" inherits="PartyCellTemplate" id="34">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData33" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData35" inherits="PartyCellTemplate" id="35">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData34" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+
+							<Button name="PartyFrameData36" inherits="PartyCellTemplate" id="36">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameColumnHeader8" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData37" inherits="PartyCellTemplate" id="37">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData36" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData38" inherits="PartyCellTemplate" id="38">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData37" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData39" inherits="PartyCellTemplate" id="39">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData38" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+							<Button name="PartyFrameData40" inherits="PartyCellTemplate" id="40">
+								<Anchors>
+									<Anchor point="TOP" relativeTo="PartyFrameData39" relativePoint="BOTTOM">
+										<Offset>
+											<AbsDimension x="0" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+								
+							</Button>
+						</Frames>
+						<Scripts>
+							<OnLoad>
+								this:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b);
+								this:SetBackdropBorderColor(RED_FONT_COLOR.r, RED_FONT_COLOR.g, RED_FONT_COLOR.b);				
+							</OnLoad>
+						</Scripts>
+					</Frame>
+					
+				</Frames>
 				<Scripts>
-					<OnClick>
-							whoGetLoot_previous_page()
-					</OnClick>
+					<OnLoad>
+						this:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b);
+						this:SetBackdropBorderColor(RED_FONT_COLOR.r, RED_FONT_COLOR.g, RED_FONT_COLOR.b);				
+					</OnLoad>
 				</Scripts>
-			</Button>
+			</Frame>
+			
 		</Frames>
 		<Scripts>
 			<OnLoad>
@@ -970,7 +2244,7 @@
 	<!-- setDKP frame -->
 	<Frame name="whoGetLoot_setDKP" parent="UIParent" hidden="true" movable="true" enableMouse="True" frameStrata="DIALOG">
 		<Size>
-			<AbsDimension x="220" y="160"/>
+			<AbsDimension x="280" y="180"/>
 		</Size>
 		<Anchors>
 			<Anchor point="TOPLEFT"/>
@@ -1066,9 +2340,19 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
-				<FontString name="$parentRemarkTitle" inherits="GameFontNormal" text="WHOGETLOOT_BUTTON_SET_DKP_REMARK_TITLE" justifyH="LEFT" justifyV="TOP">
+				<FontString name="$parentEffectDKPFlagTitle" inherits="GameFontNormal" text="WHOGETLOOT_BUTTON_SET_DKP_EFFECT_DKP_FLAG_TITLE" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeTo="$parentDKPTitle" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-4"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentEffectDKPFlagValue" inherits="GameFontNormal" hidden="true"/>
+				<FontString name="$parentRemarkTitle" inherits="GameFontNormal" text="WHOGETLOOT_BUTTON_SET_DKP_REMARK_TITLE" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentEffectDKPFlagTitle" relativePoint="BOTTOMLEFT">
 							<Offset>
 								<AbsDimension x="0" y="-4"/>
 							</Offset>
@@ -1086,7 +2370,7 @@
 			</Button>
 			<EditBox name="$parentDKPEditBox" inherits="InputBoxTemplate" letters="3" numeric="true" autoFocus="false">
 				<Size>
-					<AbsDimension x="130" y="20"/>
+					<AbsDimension x="40" y="20"/>
 				</Size>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parentDKPTitle" relativePoint="RIGHT">
@@ -1100,9 +2384,117 @@
 					</OnEnterPressed>
 				</Scripts>
 			</EditBox>
-			<EditBox name="$parentRemarkEditBox" inherits="InputBoxTemplate" letters="6" autoFocus="false">
+			<Button name="$parentDKPShortCutButton_1" inherits="UIPanelButtonTemplate" text="1">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentDKPEditBox">
+						<Offset>
+							<AbsDimension x="5" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
 				<Size>
-					<AbsDimension x="130" y="20"/>
+					<AbsDimension x="20" y="20"/>
+				</Size>
+				<Scripts>
+					<OnClick>
+						whoGetLoot_setDKPDKPEditBox:SetText(1)
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentDKPShortCutButton_2" inherits="UIPanelButtonTemplate" text="2">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentDKPShortCutButton_1">
+						<Offset>
+							<AbsDimension x="5" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="20" y="20"/>
+				</Size>
+				<Scripts>
+					<OnClick>
+												whoGetLoot_setDKPDKPEditBox:SetText(2)
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentDKPShortCutButton_3" inherits="UIPanelButtonTemplate" text="3">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentDKPShortCutButton_2">
+						<Offset>
+							<AbsDimension x="5" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="20" y="20"/>
+				</Size>
+				<Scripts>
+					<OnClick>
+												whoGetLoot_setDKPDKPEditBox:SetText(3)
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentDKPShortCutButton_4" inherits="UIPanelButtonTemplate" text="4">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentDKPShortCutButton_3">
+						<Offset>
+							<AbsDimension x="5" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="20" y="20"/>
+				</Size>
+				<Scripts>
+					<OnClick>
+												whoGetLoot_setDKPDKPEditBox:SetText(4)
+					</OnClick>
+				</Scripts>
+			</Button>
+			<CheckButton name="$parentEffectDkpCheckButtonYes" inherits="UICheckButtonTemplate">
+				<Size>
+					<AbsDimension x="20" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentEffectDKPFlagTitle" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="10" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						whoGetLoot_setDKPEffectDkpCheckButtonYesText:SetText(WHOGETLOOT_BUTTON_YES)
+					</OnLoad>
+					<OnClick>
+						whoGetLoot_radio_button_from_view_selected("whoGetLoot_setDKPEffectDkpCheckButtonNo", "whoGetLoot_setDKPEffectDkpCheckButtonYes", "whoGetLoot_setDKPEffectDKPFlagValue", WHOGETLOOT_BUTTON_YES)
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentEffectDkpCheckButtonNo" inherits="UICheckButtonTemplate">
+				<Size>
+					<AbsDimension x="20" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentEffectDkpCheckButtonYes" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="20" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						whoGetLoot_setDKPEffectDkpCheckButtonNoText:SetText(WHOGETLOOT_BUTTON_NO)
+					</OnLoad>
+					<OnClick>
+						whoGetLoot_radio_button_from_view_selected("whoGetLoot_setDKPEffectDkpCheckButtonYes", "whoGetLoot_setDKPEffectDkpCheckButtonNo", "whoGetLoot_setDKPEffectDKPFlagValue", WHOGETLOOT_BUTTON_NO)
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<EditBox name="$parentRemarkEditBox" inherits="InputBoxTemplate" letters="20" autoFocus="false">
+				<Size>
+					<AbsDimension x="120" y="20"/>
 				</Size>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parentRemarkTitle" relativePoint="RIGHT">
@@ -1116,6 +2508,23 @@
 					</OnEnterPressed>
 				</Scripts>
 			</EditBox>
+			<Button name="$parentRemarkShortCutButton_1" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_REMARK_SHORTCUT_1">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentRemarkEditBox">
+						<Offset>
+							<AbsDimension x="5" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="40" y="20"/>
+				</Size>
+				<Scripts>
+					<OnClick>
+						whoGetLoot_setDKPRemarkEditBox:SetText(WHOGETLOOT_BUTTON_REMARK_SHORTCUT_1)
+					</OnClick>
+				</Scripts>
+			</Button>
 			<Button name="$parentDKPConfirmButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_CONFIRM">
 				<Anchors>
 					<Anchor point="BOTTOM" relativePoint="BOTTOM" relativeTo="whoGetLoot_setDKP">
@@ -1151,7 +2560,7 @@
 	</Frame>
 
 	<!-- exportCSV frame -->
-	<Frame name="whoGetLoot_exportDKP" frameStrata="DIALOG" toplevel="true" parent="UIParent" movable="false" enableMouse="true" hidden="true" clampedToScreen="true">
+	<Frame name="whoGetLoot_exportData" frameStrata="DIALOG" toplevel="true" parent="UIParent" movable="false" enableMouse="true" hidden="true" clampedToScreen="true">
 		<Size>
 			<AbsDimension x="500" y="500" />
 		</Size>
@@ -1181,7 +2590,7 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
-					<OnClick>getglobal("whoGetLoot_exportDKP"):Hide();</OnClick>
+					<OnClick>getglobal("whoGetLoot_exportData"):Hide();</OnClick>
 				</Scripts>
 			</Button>
 			<EditBox name="$parentExportEdit" inherits="InputBoxTemplate" multiLine="true" autofocus="false">
@@ -1237,7 +2646,6 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
-
 				<FontString name="$parentTip1" inherits="GameFontNormal" text="WHOGETLOOT_LABEL_HELP_MESSAGE_1" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
@@ -1247,7 +2655,6 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
-
 				<FontString name="$parentTip2" inherits="GameFontNormal" text="WHOGETLOOT_LABEL_HELP_MESSAGE_2" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeTo="$parentTip1" relativePoint="BOTTOMLEFT">
@@ -1257,7 +2664,6 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
-
 				<FontString name="$parentTip3" inherits="GameFontNormal" text="WHOGETLOOT_LABEL_HELP_MESSAGE_3" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeTo="$parentTip2" relativePoint="BOTTOMLEFT">
@@ -1267,7 +2673,6 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
-
 				<FontString name="$parentTip4" inherits="GameFontNormal" text="WHOGETLOOT_LABEL_HELP_MESSAGE_4" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeTo="$parentTip3" relativePoint="BOTTOMLEFT">
@@ -1277,10 +2682,27 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
-
 				<FontString name="$parentTip5" inherits="GameFontNormal" text="WHOGETLOOT_LABEL_HELP_MESSAGE_5" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeTo="$parentTip4" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-10"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentTip6" inherits="GameFontNormal" text="WHOGETLOOT_LABEL_HELP_MESSAGE_6" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTip5" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-10"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentTip7" inherits="GameFontNormal" text="WHOGETLOOT_LABEL_HELP_MESSAGE_7" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTip6" relativePoint="BOTTOMLEFT">
 							<Offset>
 								<AbsDimension x="0" y="-10"/>
 							</Offset>
@@ -1337,7 +2759,7 @@
 	<!-- data add frame -->
 	<Frame name="whoGetLoot_dataAdd" parent="UIParent" hidden="true" movable="true" enableMouse="True" frameStrata="DIALOG">
 		<Size>
-			<AbsDimension x="220" y="160"/>
+			<AbsDimension x="280" y="180"/>
 		</Size>
 		<Anchors>
 			<Anchor point="TOPLEFT"/>
@@ -1423,7 +2845,7 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
-				<FontString name="$parentRemarkTitle" inherits="GameFontNormal" text="WHOGETLOOT_BUTTON_DATA_ADD_REMARK_TITLE" justifyH="LEFT" justifyV="TOP">
+				<FontString name="$parentEffectDKPFlagTitle" inherits="GameFontNormal" text="WHOGETLOOT_BUTTON_SET_DKP_EFFECT_DKP_FLAG_TITLE" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeTo="$parentDKPTitle" relativePoint="BOTTOMLEFT">
 							<Offset>
@@ -1432,6 +2854,17 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
+				<FontString name="$parentEffectDKPFlagValue" inherits="GameFontNormal" hidden="true"/>
+				<FontString name="$parentRemarkTitle" inherits="GameFontNormal" text="WHOGETLOOT_BUTTON_DATA_ADD_REMARK_TITLE" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentEffectDKPFlagTitle" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-4"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				
 			</Layer>
 		</Layers>
 
@@ -1459,7 +2892,7 @@
 			</EditBox>
 			<EditBox name="$parentDKPEditBox" inherits="InputBoxTemplate" letters="3" numeric="true" autoFocus="false">
 				<Size>
-					<AbsDimension x="130" y="20"/>
+					<AbsDimension x="40" y="20"/>
 				</Size>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parentDKPTitle" relativePoint="RIGHT">
@@ -1473,9 +2906,117 @@
 					</OnEnterPressed>
 				</Scripts>
 			</EditBox>
-			<EditBox name="$parentRemarkEditBox" inherits="InputBoxTemplate" letters="6" autoFocus="false">
+			<Button name="$parentDKPShortCutButton_1" inherits="UIPanelButtonTemplate" text="1">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentDKPEditBox">
+						<Offset>
+							<AbsDimension x="5" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
 				<Size>
-					<AbsDimension x="130" y="20"/>
+					<AbsDimension x="20" y="20"/>
+				</Size>
+				<Scripts>
+					<OnClick>
+						whoGetLoot_dataAddDKPEditBox:SetText(1)
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentDKPShortCutButton_2" inherits="UIPanelButtonTemplate" text="2">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentDKPShortCutButton_1">
+						<Offset>
+							<AbsDimension x="5" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="20" y="20"/>
+				</Size>
+				<Scripts>
+					<OnClick>
+												whoGetLoot_dataAddDKPEditBox:SetText(2)
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentDKPShortCutButton_3" inherits="UIPanelButtonTemplate" text="3">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentDKPShortCutButton_2">
+						<Offset>
+							<AbsDimension x="5" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="20" y="20"/>
+				</Size>
+				<Scripts>
+					<OnClick>
+												whoGetLoot_dataAddDKPEditBox:SetText(3)
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentDKPShortCutButton_4" inherits="UIPanelButtonTemplate" text="4">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentDKPShortCutButton_3">
+						<Offset>
+							<AbsDimension x="5" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="20" y="20"/>
+				</Size>
+				<Scripts>
+					<OnClick>
+												whoGetLoot_dataAddDKPEditBox:SetText(4)
+					</OnClick>
+				</Scripts>
+			</Button>
+			<CheckButton name="$parentEffectDkpCheckButtonYes" inherits="UICheckButtonTemplate">
+				<Size>
+					<AbsDimension x="20" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentEffectDKPFlagTitle" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="10" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						whoGetLoot_dataAddEffectDkpCheckButtonYesText:SetText(WHOGETLOOT_BUTTON_YES)
+					</OnLoad>
+					<OnClick>
+						whoGetLoot_radio_button_from_view_selected("whoGetLoot_dataAddEffectDkpCheckButtonNo", "whoGetLoot_dataAddEffectDkpCheckButtonYes", "whoGetLoot_dataAddEffectDKPFlagValue", WHOGETLOOT_BUTTON_YES)
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentEffectDkpCheckButtonNo" inherits="UICheckButtonTemplate">
+				<Size>
+					<AbsDimension x="20" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentEffectDkpCheckButtonYes" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="20" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						whoGetLoot_dataAddEffectDkpCheckButtonNoText:SetText(WHOGETLOOT_BUTTON_NO)
+					</OnLoad>
+					<OnClick>
+						whoGetLoot_radio_button_from_view_selected("whoGetLoot_dataAddEffectDkpCheckButtonYes", "whoGetLoot_dataAddEffectDkpCheckButtonNo", "whoGetLoot_dataAddEffectDKPFlagValue", WHOGETLOOT_BUTTON_NO)
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<EditBox name="$parentRemarkEditBox" inherits="InputBoxTemplate" letters="20" autoFocus="false">
+				<Size>
+					<AbsDimension x="120" y="20"/>
 				</Size>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parentRemarkTitle" relativePoint="RIGHT">
@@ -1489,6 +3030,23 @@
 					</OnEnterPressed>
 				</Scripts>
 			</EditBox>
+			<Button name="$parentRemarkShortCutButton_1" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_REMARK_SHORTCUT_1">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentRemarkEditBox">
+						<Offset>
+							<AbsDimension x="5" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="40" y="20"/>
+				</Size>
+				<Scripts>
+					<OnClick>
+						whoGetLoot_dataAddRemarkEditBox:SetText(WHOGETLOOT_BUTTON_REMARK_SHORTCUT_1)
+					</OnClick>
+				</Scripts>
+			</Button>
 			<Button name="$parentDataAddConfirmButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_CONFIRM">
 				<Anchors>
 					<Anchor point="BOTTOM" relativePoint="BOTTOM" relativeTo="whoGetLoot_dataAdd">
@@ -1627,5 +3185,162 @@
 		</Scripts>
 	</Frame>
 	
+	<!-- clock in remark add frame -->
+	<Frame name="whoGetLoot_clockInRemarkAdd" parent="UIParent" hidden="true" movable="true" enableMouse="True" frameStrata="DIALOG">
+		<Size>
+			<AbsDimension x="260" y="140"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPLEFT"/>
+			<Offset>
+				<AbsDimension x="200" y="200"/>
+			</Offset>
+		</Anchors>
+
+		<Backdrop name="$parentBackdrop" bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+			<EdgeSize>
+				<AbsValue val="16"/>
+			</EdgeSize>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<BackgroundInsets>
+				<AbsInset left="5" right="5" top="5" bottom="5"/>
+			</BackgroundInsets>
+		</Backdrop>
+
+		<Layers>
+			<Layer level="BACKGROUND">
+				<FontString name="$parentTitle" inherits="GameFontNormal" text="WHOGETLOOT_BUTTON_CLOCK_IN_REMARK_ADD" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="whoGetLoot_clockInRemarkAdd" relativePoint="TOPLEFT">
+							<Offset>
+								<AbsDimension x="10" y="-10"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentDataIndex" inherits="GameFontNormal" text="" hidden="true"/>
+				<FontString name="$parentTimeTitle" inherits="GameFontNormal" text="WHOGETLOOT_BUTTON_CLOCK_IN_REMARK_ADD_TIME_TITLE" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-4"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentTimeContent" inherits="GameFontNormal" text="" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentTimeTitle" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentTotalTitle" inherits="GameFontNormal" text="WHOGETLOOT_BUTTON_CLOCK_IN_REMARK_ADD_TOTAL_TITLE" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTimeTitle" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-4"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentTotalContent" inherits="GameFontNormal" text="" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentTotalTitle" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentAbsentTitle" inherits="GameFontNormal" text="WHOGETLOOT_BUTTON_CLOCK_IN_REMARK_ADD_ABSENT_TITLE" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTotalTitle" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-4"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentAbsentContent" inherits="GameFontNormal" text="" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentAbsentTitle" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentRemarkTitle" inherits="GameFontNormal" text="WHOGETLOOT_BUTTON_CLOCK_IN_REMARK_ADD_REMARK_TITLE" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTotalTitle" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-4"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Frames>
+			<Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="whoGetLoot_clockInRemarkAdd" relativePoint="TOPRIGHT"/>
+				</Anchors>
+			</Button>
+			<EditBox name="$parentRemarkEditBox" inherits="InputBoxTemplate" letters="40" autoFocus="false">
+				<Size>
+					<AbsDimension x="130" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentRemarkTitle" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="10" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnEnterPressed>
+					</OnEnterPressed>
+				</Scripts>
+			</EditBox>
+			<Button name="$parentConfirmButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_CONFIRM">
+				<Anchors>
+					<Anchor point="BOTTOM" relativePoint="BOTTOM" relativeTo="whoGetLoot_clockInRemarkAdd">
+						<Offset>
+							<AbsDimension x="0" y="10"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="70" y="20"/>
+				</Size>
+				<Scripts>
+					<OnClick>
+						whoGetLoot_clock_in_remark_add_confirm()
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				this:RegisterForDrag("LeftButton");
+				this:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b);
+				this:SetBackdropBorderColor(DEFAULT_CHATFRAME_COLOR.r, DEFAULT_CHATFRAME_COLOR.g, DEFAULT_CHATFRAME_COLOR.b);
+				this:Show();
+			</OnLoad>
+			<OnDragStart>
+				this:StartMoving();
+			</OnDragStart>
+			<OnDragStop>
+				this:StopMovingOrSizing();
+			</OnDragStop>
+		</Scripts>
+	</Frame>
 
 </Ui>

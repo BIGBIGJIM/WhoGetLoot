@@ -6,6 +6,7 @@ function whoGetLoot_OnLoad()
   this:RegisterEvent("VARIABLES_LOADED")
   this:RegisterEvent("CHAT_MSG_LOOT")
   this:RegisterEvent("CHAT_MSG_SYSTEM")
+  this:RegisterEvent("CHAT_MSG_WHISPER");
 
 
   -- listen loot status:
@@ -30,16 +31,16 @@ function whoGetLoot_OnLoad()
   whoGetLoot_quality_mapping["enableLegendary"] = "ff8000"
 
   -- class color
-  whoGetLoot_classes_color_mapping ={}
-  whoGetLoot_classes_color_mapping[WHOGETLOOT_SETTLEMENT_KEY_CLASSES_WARRIOR] = {r=0.78, g=0.61, b=0.43}
-  whoGetLoot_classes_color_mapping[WHOGETLOOT_SETTLEMENT_KEY_CLASSES_PALADIN] = {r=0.96, g=0.55, b=0.73}
-  whoGetLoot_classes_color_mapping[WHOGETLOOT_SETTLEMENT_KEY_CLASSES_HUNTER] = {r=0.67, g=0.83, b=0.45}
-  whoGetLoot_classes_color_mapping[WHOGETLOOT_SETTLEMENT_KEY_CLASSES_SHAMAN] = {r=0.00, g=0.44, b=0.87}
-  whoGetLoot_classes_color_mapping[WHOGETLOOT_SETTLEMENT_KEY_CLASSES_ROGUE] = {r=1.00, g=0.96, b=00.41}
-  whoGetLoot_classes_color_mapping[WHOGETLOOT_SETTLEMENT_KEY_CLASSES_PRIEST] = {r=1.00, g=1.00, b=1.00}
-  whoGetLoot_classes_color_mapping[WHOGETLOOT_SETTLEMENT_KEY_CLASSES_MAGE] = {r=0.25, g=0.78, b=0.92}
-  whoGetLoot_classes_color_mapping[WHOGETLOOT_SETTLEMENT_KEY_CLASSES_WARLOCK] = {r=0.53, g=0.53, b=0.93}
-  whoGetLoot_classes_color_mapping[WHOGETLOOT_SETTLEMENT_KEY_CLASSES_DRUID] = {r=1.00, g=0.49, b=0.04}
+  whoGetLoot_classes_color_mapping = {}
+  whoGetLoot_classes_color_mapping[WHOGETLOOT_SETTLEMENT_KEY_CLASSES_WARRIOR] = { r = 0.78, g = 0.61, b = 0.43 }
+  whoGetLoot_classes_color_mapping[WHOGETLOOT_SETTLEMENT_KEY_CLASSES_PALADIN] = { r = 0.96, g = 0.55, b = 0.73 }
+  whoGetLoot_classes_color_mapping[WHOGETLOOT_SETTLEMENT_KEY_CLASSES_HUNTER] = { r = 0.67, g = 0.83, b = 0.45 }
+  whoGetLoot_classes_color_mapping[WHOGETLOOT_SETTLEMENT_KEY_CLASSES_SHAMAN] = { r = 0.00, g = 0.44, b = 0.87 }
+  whoGetLoot_classes_color_mapping[WHOGETLOOT_SETTLEMENT_KEY_CLASSES_ROGUE] = { r = 1.00, g = 0.96, b = 00.41 }
+  whoGetLoot_classes_color_mapping[WHOGETLOOT_SETTLEMENT_KEY_CLASSES_PRIEST] = { r = 1.00, g = 1.00, b = 1.00 }
+  whoGetLoot_classes_color_mapping[WHOGETLOOT_SETTLEMENT_KEY_CLASSES_MAGE] = { r = 0.25, g = 0.78, b = 0.92 }
+  whoGetLoot_classes_color_mapping[WHOGETLOOT_SETTLEMENT_KEY_CLASSES_WARLOCK] = { r = 0.53, g = 0.53, b = 0.93 }
+  whoGetLoot_classes_color_mapping[WHOGETLOOT_SETTLEMENT_KEY_CLASSES_DRUID] = { r = 1.00, g = 0.49, b = 0.04 }
 
 
   whoGetLoot_row_array = {}
@@ -52,16 +53,20 @@ function whoGetLoot_OnLoad()
   whoGetLoot_chock_in_current_page_number = 1
   whoGetLoot_chock_in_current_page_size = 10
 
+  whoGetLoot_import_dkp_data_array = {}
+  whoGetLoot_default_dkp = 4
+  whoGetLoot_import_dkp_time = ""
+
   whoGetLoot_raid_table_hightlight_selected_index = 0
 
-  whoGetLoot_tab_name_list = {"whoGetLoot_main_LootPanel", "whoGetLoot_main_SettlementPanel"}
+  whoGetLoot_tab_name_list = { "whoGetLoot_main_LootPanel", "whoGetLoot_main_SettlementPanel" }
 
   -- Register a slash command:
   SlashCmdList["WHOGETLOOT"] = whoGetLoot_toggle_main
   SLASH_WHOGETLOOT1 = "/wgl"
   SLASH_WHOGETLOOT2 = "/whoGetLoot"
 
-  
+
   -- Make the options frame closable with ESC:
   table.insert(UISpecialFrames, "whoGetLoot_option");
   table.insert(UISpecialFrames, "whoGetLoot_setDKP");
@@ -69,6 +74,13 @@ function whoGetLoot_OnLoad()
   table.insert(UISpecialFrames, "whoGetLoot_tips");
   table.insert(UISpecialFrames, "whoGetLoot_dataAdd");
   table.insert(UISpecialFrames, "whoGetLoot_clockInRemarkAdd");
+
+  UnitPopupButtons[WHOGETLOOT_POPUP_MENU_GET_LOOT_KEY] = { text = WHOGETLOOT_POPUP_MENU_GET_LOOT_TEXT, dist = 0 };
+
+  whoGetLoot_original_unitpopup = UnitPopup_OnClick;
+  UnitPopup_OnClick = whoGetLoot_popup_menu_handle;
+
+  whoGetLoot_popup_menu_onLoad()
 end
 
 function whoGetLoot_OnEvent()
@@ -78,6 +90,10 @@ function whoGetLoot_OnEvent()
 
   if (event == "CHAT_MSG_LOOT") then
     whoGetLoot_handle_loot_message(arg1)
+  end
+
+  if (event == "CHAT_MSG_WHISPER") then
+    whoGetLoot_whisper_handle(arg1, arg2)
   end
 
   if event == "CHAT_MSG_SYSTEM" and arg1 == WHOGETLOOT_MSG_SYSTEM_MESSAGE_JOIN then
@@ -109,6 +125,8 @@ function whoGetLoot_initialize()
   whoGetLoot_refresh_row_data()
 
   whoGetLoot_chock_in_refresh_row_data()
+
+  whoGetLoot_init_import_dkp()
 
   -- Hide the window:
   whoGetLoot_main:Hide()
@@ -161,7 +179,8 @@ function whoGetLoot_open_frame_dataAdd()
           whoGetLoot_dataAddNameContent:SetText(unitName)
           whoGetLoot_dataAddLootEditBox:SetText("")
           whoGetLoot_dataAddDKPEditBox:SetText(0)
-          whoGetLoot_radio_button_from_data_selected("whoGetLoot_dataAddEffectDkpCheckButtonYes", "whoGetLoot_dataAddEffectDkpCheckButtonNo", "whoGetLoot_dataAddEffectDKPFlagValue", WHOGETLOOT_BUTTON_NO)
+          whoGetLoot_radio_button_from_data_selected("whoGetLoot_dataAddEffectDkpCheckButtonYes",
+            "whoGetLoot_dataAddEffectDkpCheckButtonNo", "whoGetLoot_dataAddEffectDKPFlagValue", WHOGETLOOT_BUTTON_NO)
           whoGetLoot_dataAddRemarkEditBox:SetText("")
           whoGetLoot_dataAdd:Show()
           break
@@ -180,7 +199,9 @@ function whoGetLoot_open_frame_setDKP(dataIndex)
     whoGetLoot_setDKPNameContent:SetText(row[WHOGETLOOT_KEY_ROLE_NAME])
     whoGetLoot_setDKPLootContent:SetText(row[WHOGETLOOT_KEY_LOOT])
     whoGetLoot_setDKPDKPEditBox:SetText(row[WHOGETLOOT_KEY_DKP])
-    whoGetLoot_radio_button_from_data_selected("whoGetLoot_setDKPEffectDkpCheckButtonYes", "whoGetLoot_setDKPEffectDkpCheckButtonNo", "whoGetLoot_setDKPEffectDKPFlagValue", row[WHOGETLOOT_KEY_EFFECT_DKP_FLAG])
+    whoGetLoot_radio_button_from_data_selected("whoGetLoot_setDKPEffectDkpCheckButtonYes",
+      "whoGetLoot_setDKPEffectDkpCheckButtonNo", "whoGetLoot_setDKPEffectDKPFlagValue",
+      row[WHOGETLOOT_KEY_EFFECT_DKP_FLAG])
     whoGetLoot_setDKPRemarkEditBox:SetText(row[WHOGETLOOT_KEY_REMARK])
     whoGetLoot_setDKP:Show()
   end
@@ -336,20 +357,20 @@ end
 
 function whoGetLoot_export_loot_csv_data()
   local csvText = WHOGETLOOT_BUTTON_HEADER_TIME ..
-  "," .. WHOGETLOOT_BUTTON_HEADER_NAME ..
-  "," .. WHOGETLOOT_BUTTON_HEADER_LOOT ..
-  "," .. WHOGETLOOT_BUTTON_HEADER_DKP ..
-  "," .. WHOGETLOOT_BUTTON_HEADER_EFFECT_DKP_FLAG ..
-  "," .. WHOGETLOOT_BUTTON_HEADER_LOOT_REMARK .. WHOGETLOOT_MSG_NEW_LINE
+      "," .. WHOGETLOOT_BUTTON_HEADER_NAME ..
+      "," .. WHOGETLOOT_BUTTON_HEADER_LOOT ..
+      "," .. WHOGETLOOT_BUTTON_HEADER_DKP ..
+      "," .. WHOGETLOOT_BUTTON_HEADER_EFFECT_DKP_FLAG ..
+      "," .. WHOGETLOOT_BUTTON_HEADER_LOOT_REMARK .. WHOGETLOOT_MSG_NEW_LINE
   for i = 1, whoGetLoot_row_total do
     local row = whoGetLoot_row_array[i]
     csvText = csvText ..
-    row[WHOGETLOOT_KEY_TIME] ..
-    "," .. row[WHOGETLOOT_KEY_ROLE_NAME] ..
-    "," .. row[WHOGETLOOT_KEY_LOOT] ..
-    "," .. row[WHOGETLOOT_KEY_DKP] ..
-    "," .. row[WHOGETLOOT_KEY_EFFECT_DKP_FLAG] ..
-    "," .. row[WHOGETLOOT_KEY_REMARK] .. WHOGETLOOT_MSG_NEW_LINE
+        row[WHOGETLOOT_KEY_TIME] ..
+        "," .. row[WHOGETLOOT_KEY_ROLE_NAME] ..
+        "," .. row[WHOGETLOOT_KEY_LOOT] ..
+        "," .. row[WHOGETLOOT_KEY_DKP] ..
+        "," .. row[WHOGETLOOT_KEY_EFFECT_DKP_FLAG] ..
+        "," .. row[WHOGETLOOT_KEY_REMARK] .. WHOGETLOOT_MSG_NEW_LINE
   end
   getglobal("whoGetLoot_exportDataExportEdit"):SetText(csvText);
   getglobal("whoGetLoot_exportData"):Show();
@@ -448,7 +469,7 @@ function whoGetLoot_select_tab(tabName)
     local panel = getglobal(value)
     if tabName == value then
       panel:Show()
-    else 
+    else
       panel:Hide()
     end
   end
@@ -464,10 +485,10 @@ function whoGetLoot_chock_in()
     for i = 1, numRaidMembers do
       local name, _, subgroup, _, class = GetRaidRosterInfo(i)
       if name and class then
-          if not groups[subgroup] then
-              groups[subgroup] = {}
-          end
-          table.insert(groups[subgroup], {name = name, class = class})
+        if not groups[subgroup] then
+          groups[subgroup] = {}
+        end
+        table.insert(groups[subgroup], { name = name, class = class })
       end
     end
 
@@ -477,14 +498,14 @@ function whoGetLoot_chock_in()
         for j = 1, 5 do
           local member = members[j]
           if member then
-            table.insert(detail, {name=member.name, class=member.class, status=true})
+            table.insert(detail, { name = member.name, class = member.class, status = true })
           else
-            table.insert(detail, {name="", class="", status=true})
+            table.insert(detail, { name = "", class = "", status = true })
           end
         end
       else
         for j = 1, 5 do
-          table.insert(detail, {name="", class="", status=true})
+          table.insert(detail, { name = "", class = "", status = true })
         end
       end
     end
@@ -499,19 +520,20 @@ function whoGetLoot_chock_in()
 
     table.insert(whoGetLoot_chock_in_row_array, rowInfo)
     whoGetLoot_chock_in_refresh_row_data()
-    
+
     local raidMessage = string.format(WHOGETLOOT_MSG_CLOCK_IN_TEMPLATE, rowInfo[WHOGETLOOT_SETTLEMENT_KEY_TIME],
-    rowInfo[WHOGETLOOT_SETTLEMENT_KEY_TOTAL])
+      rowInfo[WHOGETLOOT_SETTLEMENT_KEY_TOTAL])
     SendChatMessage(raidMessage, "RAID")
   end
-
 end
 
 function whoGetLoot_chock_in_refresh_row_data()
   whoGetLoot_chock_in_row_total = table.getn(whoGetLoot_chock_in_row_array)
   local startIndex, endIndex
-  startIndex = whoGetLoot_chock_in_row_total - (whoGetLoot_chock_in_current_page_number - 1) * whoGetLoot_chock_in_current_page_size
-  endIndex = whoGetLoot_chock_in_row_total - whoGetLoot_chock_in_current_page_number * whoGetLoot_chock_in_current_page_size + 1
+  startIndex = whoGetLoot_chock_in_row_total -
+      (whoGetLoot_chock_in_current_page_number - 1) * whoGetLoot_chock_in_current_page_size
+  endIndex = whoGetLoot_chock_in_row_total -
+      whoGetLoot_chock_in_current_page_number * whoGetLoot_chock_in_current_page_size + 1
   endIndex = (endIndex > 0 and endIndex or 1)
 
   local row = nil
@@ -537,7 +559,7 @@ end
 
 function whoGetLoot_chock_in_update_page_message()
   local pageInfo = string.format(WHOGETLOOT_LABEL_SETTLEMENT_PAGE_INFO_TEMPLATE, whoGetLoot_chock_in_row_total,
-  whoGetLoot_chock_in_current_page_number)
+    whoGetLoot_chock_in_current_page_number)
   whoGetLoot_main_clockIn_table_framePageInfo:SetText(pageInfo)
 end
 
@@ -570,17 +592,18 @@ function whoGetLoot_chock_in_delete_data(dataIndex)
 end
 
 function whoGetLoot_parse_class_color(className)
-  local r,g,b = whoGetLoot_classes_color_mapping[className]
-  return r,g,b
+  local r, g, b = whoGetLoot_classes_color_mapping[className]
+  return r, g, b
 end
 
 function whoGetLoot_raid_detail_table_hide()
-  local hightLight = getglobal("ClockInFrameListButton"..whoGetLoot_raid_table_hightlight_selected_index.."RowHightlight")
+  local hightLight = getglobal("ClockInFrameListButton" ..
+    whoGetLoot_raid_table_hightlight_selected_index .. "RowHightlight")
   if hightLight then
     whoGetLoot_raid_table_hightlight_selected_index = WHOGETLOOT_HIGHTLIGHT_DEFAULT_INDEX
     hightLight:Hide()
     for i = 1, 40, 1 do
-      local lable = getglobal("PartyFrameData"..i)
+      local lable = getglobal("PartyFrameData" .. i)
       lable:SetText("")
     end
   end
@@ -590,8 +613,9 @@ function whoGetLoot_raid_detail_table_toggle(hightLightId, dataIdTextName)
   if whoGetLoot_raid_table_hightlight_selected_index == hightLightId then
     whoGetLoot_raid_detail_table_hide()
   else
-    local oldHightLight = getglobal("ClockInFrameListButton"..whoGetLoot_raid_table_hightlight_selected_index.."RowHightlight")
-    local newHightLight = getglobal("ClockInFrameListButton"..hightLightId.."RowHightlight")
+    local oldHightLight = getglobal("ClockInFrameListButton" ..
+      whoGetLoot_raid_table_hightlight_selected_index .. "RowHightlight")
+    local newHightLight = getglobal("ClockInFrameListButton" .. hightLightId .. "RowHightlight")
     if oldHightLight then
       oldHightLight:Hide()
     end
@@ -602,7 +626,7 @@ function whoGetLoot_raid_detail_table_toggle(hightLightId, dataIdTextName)
       local row = whoGetLoot_chock_in_row_array[tonumber(dataId)]
       local detail = row[WHOGETLOOT_SETTLEMENT_KEY_DETAIL]
       for index, value in ipairs(detail) do
-        local lable =  getglobal("PartyFrameData"..index)
+        local lable = getglobal("PartyFrameData" .. index)
         if value.name ~= "" and value.class ~= "" then
           if value.status ~= true then
             lable:SetText(value.name)
@@ -666,17 +690,17 @@ end
 
 function whoGetLoot_export_clock_in_data()
   local clockInHeader = WHOGETLOOT_BUTTON_HEADER_TIME ..
-  "," .. WHOGETLOOT_BUTTON_TOTAL ..
-  "," .. WHOGETLOOT_BUTTON_HEADER_SETTLEMENT_REMARK .. WHOGETLOOT_MSG_NEW_LINE
-  
+      "," .. WHOGETLOOT_BUTTON_TOTAL ..
+      "," .. WHOGETLOOT_BUTTON_HEADER_SETTLEMENT_REMARK .. WHOGETLOOT_MSG_NEW_LINE
+
   local exportData = ""
 
   for i = 1, whoGetLoot_chock_in_row_total do
     local row = whoGetLoot_chock_in_row_array[i]
-    exportData = exportData .. clockInHeader .. 
-    row[WHOGETLOOT_SETTLEMENT_KEY_TIME] ..
-    "," .. row[WHOGETLOOT_SETTLEMENT_KEY_TOTAL] ..
-    "," .. row[WHOGETLOOT_SETTLEMENT_KEY_REMARK] .. WHOGETLOOT_MSG_NEW_LINE
+    exportData = exportData .. clockInHeader ..
+        row[WHOGETLOOT_SETTLEMENT_KEY_TIME] ..
+        "," .. row[WHOGETLOOT_SETTLEMENT_KEY_TOTAL] ..
+        "," .. row[WHOGETLOOT_SETTLEMENT_KEY_REMARK] .. WHOGETLOOT_MSG_NEW_LINE
         .. WHOGETLOOT_BUTTON_EXPORT_DETAIL_TITLE .. WHOGETLOOT_MSG_NEW_LINE
     local detailArray = row[WHOGETLOOT_SETTLEMENT_KEY_DETAIL]
     for _, value in ipairs(detailArray) do
@@ -699,6 +723,8 @@ function whoGetLoot_export_settlement_data()
     local item_2_array = {}
     local item_3_array = {}
     local item_4_array = {}
+    -- absence people
+    local item_5_array = {}
 
 
     local result = {}
@@ -723,11 +749,12 @@ function whoGetLoot_export_settlement_data()
         end
       end
     end
-    
+
     for _, value in ipairs(result) do
       if uniqueSet[value.name] ~= whoGetLoot_chock_in_row_total then
-        local remark = string.format(WHOGETLOOT_LABEL_SELLEMENT_ITEM_TEMPLATE_4_REMARK_1, whoGetLoot_chock_in_row_total, uniqueSet[value.name])
-        table.insert(item_4_array, {name=value.name, class=value.class, remark=remark})
+        local remark = string.format(WHOGETLOOT_LABEL_SELLEMENT_ITEM_TEMPLATE_4_REMARK_1, whoGetLoot_chock_in_row_total,
+          uniqueSet[value.name])
+        table.insert(item_5_array, { name = value.name, class = value.class, remark = remark })
       else
         local notEffectDkpLoot = {}
         local getEffectLootFlag = false
@@ -736,8 +763,9 @@ function whoGetLoot_export_settlement_data()
             if lootLog[WHOGETLOOT_KEY_EFFECT_DKP_FLAG] == WHOGETLOOT_BUTTON_YES then
               if getEffectLootFlag == false then
                 getEffectLootFlag = true
-                local remark = string.format(WHOGETLOOT_LABEL_SELLEMENT_ITEM_TEMPLATE_4_REMARK_2, lootLog[WHOGETLOOT_KEY_LOOT])
-                table.insert(item_4_array, {name=value.name, class=value.class, remark=remark})
+                local remark = string.format(WHOGETLOOT_LABEL_SELLEMENT_ITEM_TEMPLATE_4_REMARK_2,
+                  lootLog[WHOGETLOOT_KEY_LOOT])
+                table.insert(item_4_array, { name = value.name, class = value.class, remark = remark })
               end
             else
               table.insert(notEffectDkpLoot, lootLog[WHOGETLOOT_KEY_LOOT])
@@ -753,73 +781,106 @@ function whoGetLoot_export_settlement_data()
               tempStr = tempStr .. lootName .. ","
             end
             local remark = string.format(WHOGETLOOT_LABEL_SELLEMENT_ITEM_TEMPLATE_3_REMARK_1, tempStr)
-            table.insert(item_3_array, {name=value.name, class=value.class, remark=remark})
+            table.insert(item_3_array, { name = value.name, class = value.class, remark = remark })
           else
-            table.insert(item_2_array, {name=value.name, class=value.class, remark=""})
+            table.insert(item_2_array, { name = value.name, class = value.class, remark = "" })
           end
         end
-        
       end
     end
 
-    
+    for _, value in ipairs(item_5_array) do
+      local getEffectLootFlag = false
+      for _, lootLog in ipairs(whoGetLoot_row_array) do
+        if lootLog[WHOGETLOOT_KEY_ROLE_NAME] == value.name then
+          if lootLog[WHOGETLOOT_KEY_EFFECT_DKP_FLAG] == WHOGETLOOT_BUTTON_YES then
+            if getEffectLootFlag == false then
+              getEffectLootFlag = true
+              value.remark = value.remark .. "," .. string.format(WHOGETLOOT_LABEL_SELLEMENT_ITEM_TEMPLATE_4_REMARK_2,
+                lootLog[WHOGETLOOT_KEY_LOOT])
+              break
+            end
+          end
+        end
+      end
+      if not getEffectLootFlag then
+        value.remark = value.remark .. "," .. WHOGETLOOT_LABEL_SELLEMENT_ITEM_TEMPLATE_4_REMARK_3
+      end
+      table.insert(item_4_array, { name = value.name, class = value.class, remark = value.remark })
+    end
+
 
     local totalPersonNum = table.getn(result)
     local item_2_personNum = 0
     local item_3_personNum = 0
     local item_4_personNum = 0
 
+
     local item_2_detail_data = ""
     local item_3_detail_data = ""
     local item_4_detail_data = ""
 
+
     for _, value in ipairs(item_2_array) do
       item_2_detail_data = item_2_detail_data ..
-      value.name .. "," .. value.class .. "," .. value.remark .. WHOGETLOOT_MSG_NEW_LINE
+          value.name .. "," .. value.class .. "," .. value.remark .. WHOGETLOOT_MSG_NEW_LINE
       item_2_personNum = item_2_personNum + 1
     end
 
     for _, value in ipairs(item_3_array) do
       item_3_detail_data = item_3_detail_data ..
-      value.name .. "," .. value.class .. "," .. value.remark .. WHOGETLOOT_MSG_NEW_LINE
+          value.name .. "," .. value.class .. "," .. value.remark .. WHOGETLOOT_MSG_NEW_LINE
       item_3_personNum = item_3_personNum + 1
     end
 
     for _, value in ipairs(item_4_array) do
       item_4_detail_data = item_4_detail_data ..
-      value.name .. "," .. value.class .. "," .. value.remark .. WHOGETLOOT_MSG_NEW_LINE
+          value.name .. "," .. value.class .. "," .. value.remark .. WHOGETLOOT_MSG_NEW_LINE
       item_4_personNum = item_4_personNum + 1
     end
-    
+
+
     local item_1 = string.format(WHOGETLOOT_LABEL_SELLEMENT_ITEM_TEMPLATE_1, totalPersonNum)
     local item_2 = string.format(WHOGETLOOT_LABEL_SELLEMENT_ITEM_TEMPLATE_2, item_2_personNum)
     local item_3 = string.format(WHOGETLOOT_LABEL_SELLEMENT_ITEM_TEMPLATE_3, item_3_personNum)
     local item_4 = string.format(WHOGETLOOT_LABEL_SELLEMENT_ITEM_TEMPLATE_4, item_4_personNum)
 
     local exportData = item_1 .. WHOGETLOOT_MSG_NEW_LINE
-    .. item_2 .. WHOGETLOOT_MSG_NEW_LINE
+        .. item_2 .. WHOGETLOOT_MSG_NEW_LINE
 
     if item_2_personNum > 0 then
       exportData = exportData
-      .. WHOGETLOOT_BUTTON_EXPORT_DETAIL_TITLE .. WHOGETLOOT_MSG_NEW_LINE
-      .. WHOGETLOOT_BUTTON_HEADER_NAME .. "," .. WHOGETLOOT_BUTTON_HEADER_CLASS .. "," .. WHOGETLOOT_BUTTON_HEADER_SELLEMENT_EXPORT_REMARK .. WHOGETLOOT_MSG_NEW_LINE
-      .. item_2_detail_data .. WHOGETLOOT_MSG_NEW_LINE
+          .. WHOGETLOOT_BUTTON_EXPORT_DETAIL_TITLE .. WHOGETLOOT_MSG_NEW_LINE
+          ..
+          WHOGETLOOT_BUTTON_HEADER_NAME ..
+          "," ..
+          WHOGETLOOT_BUTTON_HEADER_CLASS ..
+          "," .. WHOGETLOOT_BUTTON_HEADER_SELLEMENT_EXPORT_REMARK .. WHOGETLOOT_MSG_NEW_LINE
+          .. item_2_detail_data .. WHOGETLOOT_MSG_NEW_LINE
     end
 
     exportData = exportData .. item_3 .. WHOGETLOOT_MSG_NEW_LINE
     if item_3_personNum > 0 then
       exportData = exportData
-      .. WHOGETLOOT_BUTTON_EXPORT_DETAIL_TITLE .. WHOGETLOOT_MSG_NEW_LINE
-      .. WHOGETLOOT_BUTTON_HEADER_NAME .. "," .. WHOGETLOOT_BUTTON_HEADER_CLASS .. "," .. WHOGETLOOT_BUTTON_HEADER_SELLEMENT_EXPORT_REMARK .. WHOGETLOOT_MSG_NEW_LINE
-      .. item_3_detail_data .. WHOGETLOOT_MSG_NEW_LINE
+          .. WHOGETLOOT_BUTTON_EXPORT_DETAIL_TITLE .. WHOGETLOOT_MSG_NEW_LINE
+          ..
+          WHOGETLOOT_BUTTON_HEADER_NAME ..
+          "," ..
+          WHOGETLOOT_BUTTON_HEADER_CLASS ..
+          "," .. WHOGETLOOT_BUTTON_HEADER_SELLEMENT_EXPORT_REMARK .. WHOGETLOOT_MSG_NEW_LINE
+          .. item_3_detail_data .. WHOGETLOOT_MSG_NEW_LINE
     end
 
     exportData = exportData .. item_4 .. WHOGETLOOT_MSG_NEW_LINE
     if item_4_personNum > 0 then
       exportData = exportData
-      .. WHOGETLOOT_BUTTON_EXPORT_DETAIL_TITLE .. WHOGETLOOT_MSG_NEW_LINE
-      .. WHOGETLOOT_BUTTON_HEADER_NAME .. "," .. WHOGETLOOT_BUTTON_HEADER_CLASS .. "," .. WHOGETLOOT_BUTTON_HEADER_SELLEMENT_EXPORT_REMARK .. WHOGETLOOT_MSG_NEW_LINE
-      .. item_4_detail_data .. WHOGETLOOT_MSG_NEW_LINE
+          .. WHOGETLOOT_BUTTON_EXPORT_DETAIL_TITLE .. WHOGETLOOT_MSG_NEW_LINE
+          ..
+          WHOGETLOOT_BUTTON_HEADER_NAME ..
+          "," ..
+          WHOGETLOOT_BUTTON_HEADER_CLASS ..
+          "," .. WHOGETLOOT_BUTTON_HEADER_SELLEMENT_EXPORT_REMARK .. WHOGETLOOT_MSG_NEW_LINE
+          .. item_4_detail_data .. WHOGETLOOT_MSG_NEW_LINE
     end
 
     getglobal("whoGetLoot_exportDataExportEdit"):SetText(exportData);
@@ -829,10 +890,10 @@ end
 
 function whoGetLoot_clock_in_player_status_toggle(buttonId)
   if whoGetLoot_raid_table_hightlight_selected_index > 0 then
-    local detailBUtton = getglobal("PartyFrameData"..buttonId)
+    local detailBUtton = getglobal("PartyFrameData" .. buttonId)
     if detailBUtton:GetText() ~= "" and detailBUtton:GetText() ~= nil then
       local hightLightId = whoGetLoot_raid_table_hightlight_selected_index
-      local dataIdTextName = "ClockInFrameListButton"..hightLightId.."DataIndex"
+      local dataIdTextName = "ClockInFrameListButton" .. hightLightId .. "DataIndex"
       local dataIdText = getglobal(dataIdTextName):GetText()
       local row = whoGetLoot_chock_in_row_array[tonumber(dataIdText)]
       local detailArray = row[WHOGETLOOT_SETTLEMENT_KEY_DETAIL]
@@ -848,7 +909,7 @@ function whoGetLoot_clock_in_player_status_toggle(buttonId)
         detailBUtton:SetTextColor(color.r, color.g, color.b)
       end
       local raidMessage = string.format(WHOGETLOOT_MSG_CLOCK_IN_STATUS_TEMPLATE, row[WHOGETLOOT_SETTLEMENT_KEY_TIME],
-      person.name, statusText)
+        person.name, statusText)
       SendChatMessage(raidMessage, "RAID")
     end
   end
@@ -861,5 +922,163 @@ function whoGetLoot_clock_in_clear()
   whoGetLoot_chock_in_refresh_row_data()
   if whoGetLoot_clockInRemarkAdd:IsVisible() then
     whoGetLoot_clockInRemarkAdd:Hide()
+  end
+end
+
+function whoGetLoot_init_import_dkp()
+  local importData = ""
+  if whoGetLoot_import_dkp_data_array then
+    for index in whoGetLoot_import_dkp_data_array do
+      local item = whoGetLoot_import_dkp_data_array[index]
+      importData = importData ..
+          item[WHOGETLOOT_KEY_ROLE_NAME] .. "," .. item[WHOGETLOOT_KEY_DKP] .. WHOGETLOOT_MSG_NEW_LINE
+    end
+    local dataFrame = getglobal("whoGetLoot_importDkpImportEdit")
+    dataFrame:SetText(importData)
+  end
+  local defaultDkp = getglobal("whoGetLoot_importDkpDefaultDKPEditBox")
+  defaultDkp:SetText(whoGetLoot_default_dkp)
+end
+
+function whoGetLoot_import_dkp_toggle()
+  local importFrame = getglobal("whoGetLoot_importDkp")
+  if importFrame:IsVisible() then
+    importFrame:Hide()
+  else
+    importFrame:Show()
+  end
+end
+
+function whoGetLoot_import_dkp_comfirm()
+  local importFrame = getglobal("whoGetLoot_importDkp")
+  local dataFrame = getglobal("whoGetLoot_importDkpImportEdit")
+  local data = dataFrame:GetText()
+  -- init data
+  whoGetLoot_import_dkp_data_array = {}
+  if data then
+    local lineArray = string.gmatch(data, "[^\n]+")
+    if lineArray then
+      for line in lineArray do
+        local roleName, dkp = string.match(line, "(.-),(.*)")
+        local numDkp = tonumber(dkp)
+        local rowInfo = {}
+        rowInfo[WHOGETLOOT_KEY_ROLE_NAME] = roleName
+        rowInfo[WHOGETLOOT_KEY_DKP] = numDkp
+        if roleName and  roleName ~= "" and numDkp and numDkp ~= "" then
+          table.insert(whoGetLoot_import_dkp_data_array, rowInfo)
+        end
+      end
+    end
+  end
+  local defaultDkp = getglobal("whoGetLoot_importDkpDefaultDKPEditBox")
+  whoGetLoot_default_dkp = tonumber(defaultDkp:GetText())
+  local nowTime = date(WHOGETLOOT_MSG_TIME_FORMATE)
+  whoGetLoot_import_dkp_time = nowTime
+  SendChatMessage(WHOGETLOOT_WHISPER_QUERY_ANNOUNCE, "RAID")
+  importFrame:Hide()
+end
+
+function whoGetLoot_popup_menu_onLoad()
+  if UnitPopupMenus["PARTY"] then
+    if not whoGetLoot_contain(WHOGETLOOT_POPUP_MENU_GET_LOOT_KEY, UnitPopupMenus["PARTY"]) then
+      table.insert(UnitPopupMenus["PARTY"], WHOGETLOOT_POPUP_MENU_GET_LOOT_KEY)
+    end
+  end
+  if UnitPopupMenus["RAID"] then
+    if not whoGetLoot_contain(WHOGETLOOT_POPUP_MENU_GET_LOOT_KEY, UnitPopupMenus["RAID"]) then
+      table.insert(UnitPopupMenus["RAID"], WHOGETLOOT_POPUP_MENU_GET_LOOT_KEY)
+    end
+  end
+  if UnitPopupMenus["PLAYER"] then
+    if not whoGetLoot_contain(WHOGETLOOT_POPUP_MENU_GET_LOOT_KEY, UnitPopupMenus["PLAYER"]) then
+      table.insert(UnitPopupMenus["PLAYER"], WHOGETLOOT_POPUP_MENU_GET_LOOT_KEY)
+    end
+  end
+  if UnitPopupMenus["FRIEND"] then
+    if not whoGetLoot_contain(WHOGETLOOT_POPUP_MENU_GET_LOOT_KEY, UnitPopupMenus["FRIEND"]) then
+      table.insert(UnitPopupMenus["FRIEND"], WHOGETLOOT_POPUP_MENU_GET_LOOT_KEY)
+    end
+  end
+end
+
+function whoGetLoot_popup_menu_handle()
+  local dropdownFrame = getglobal(UIDROPDOWNMENU_INIT_MENU);
+  local button = this.value;
+  local roleName = dropdownFrame.name;
+
+  if (button == WHOGETLOOT_POPUP_MENU_GET_LOOT_KEY) then
+    local message = whoGetLoot_query_loot_record(roleName)
+    SendChatMessage(message, "RAID")
+  else
+    return whoGetLoot_original_unitpopup();
+  end
+end
+
+function whoGetLoot_query_loot_record(roleName)
+  local message = ""
+  local defaultDkp = whoGetLoot_default_dkp
+  local extarDkp = 0
+
+  if whoGetLoot_import_dkp_data_array then
+    local findDkp
+    for i in whoGetLoot_import_dkp_data_array do
+      local item = whoGetLoot_import_dkp_data_array[i]
+      if item[WHOGETLOOT_KEY_ROLE_NAME] == roleName then
+        findDkp = item[WHOGETLOOT_KEY_DKP]
+      end
+    end
+    if findDkp then
+      extarDkp = findDkp
+    end
+  end
+
+  local totalDkp = defaultDkp + extarDkp
+  local consumedDkp = 0
+  local consumedLootName = ""
+  local subMessage = ""
+  if whoGetLoot_row_array then
+    for i in whoGetLoot_row_array do
+      local item = whoGetLoot_row_array[i]
+      local getLootPlayerName = item[WHOGETLOOT_KEY_ROLE_NAME]
+      if getLootPlayerName == roleName and item[WHOGETLOOT_KEY_DKP] > 0 then
+        consumedDkp = consumedDkp + item[WHOGETLOOT_KEY_DKP]
+        consumedLootName = consumedLootName .. item[WHOGETLOOT_KEY_LOOT] .. ","
+      end
+    end
+  end
+
+  totalDkp = totalDkp - consumedDkp
+
+  if consumedLootName ~= "" then
+    subMessage = string.format(WHOGETLOOT_MSG_QUERY_LOOTED, consumedLootName)
+  else
+    subMessage = WHOGETLOOT_MSG_QUERY_NOT_LOOT
+  end
+
+  message = string.format(WHOGETLOOT_MSG_QUERY_LOOT_MESSAGE, roleName, subMessage, defaultDkp, extarDkp, consumedDkp,
+    totalDkp, whoGetLoot_import_dkp_time)
+  return message
+end
+
+function whoGetLoot_contain(v, l)
+  if not l then
+    return false
+  end
+  local n = getn(l)
+  if n > 0 then
+    for i = 1, n do
+      local lv = l[i]
+      if v == lv then
+        return true
+      end
+    end
+  end
+  return false
+end
+
+function whoGetLoot_whisper_handle(msg, playerName)
+  if msg == WHOGETLOOT_WHISPER_QUERY_DKP_KEY_1 or msg == WHOGETLOOT_WHISPER_QUERY_DKP_KEY_2 then
+    local mesaage = whoGetLoot_query_loot_record(playerName)
+    SendChatMessage(mesaage, "WHISPER", GetDefaultLanguage(), playerName)
   end
 end

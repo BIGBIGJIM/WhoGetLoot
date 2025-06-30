@@ -1222,6 +1222,23 @@
 							</OnClick>
 						</Scripts>
 					</Button>
+					<Button name="$parentImportDkpButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_IMPORT_DKP">
+						<Anchors>
+							<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="$parentExportClockInButton">
+								<Offset>
+									<AbsDimension x="0" y="-2"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Size>
+							<AbsDimension x="100" y="20"/>
+						</Size>
+						<Scripts>
+							<OnClick>
+								whoGetLoot_import_dkp_toggle()
+							</OnClick>
+						</Scripts>
+					</Button>
 
 					<Frame name="whoGetLoot_main_clockIn_table_frame" parent="whoGetLoot_main_SettlementPanel" tile="true" >
 						<Size>
@@ -3341,6 +3358,122 @@
 				this:StopMovingOrSizing();
 			</OnDragStop>
 		</Scripts>
+	</Frame>
+
+	<!-- import dkp frame -->
+	<Frame name="whoGetLoot_importDkp" frameStrata="DIALOG" toplevel="true" parent="UIParent" movable="false" enableMouse="true" hidden="true" clampedToScreen="true">
+		<Size>
+			<AbsDimension x="500" y="500" />
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER">
+				<Offset>
+					<AbsDimension x="0" y="0" />
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<FontString name="$parentDescribe" inherits="GameFontNormal" text="WHOGETLOOT_LABLE_IMPORT_DESCRIBE_TEXT" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="whoGetLoot_importDkp" relativePoint="TOPLEFT">
+							<Offset>
+								<AbsDimension x="10" y="-10"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentTemplate" inherits="GameFontNormal" text="WHOGETLOOT_LABLE_IMPORT_TEMPLATE" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentDescribe" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-10"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentDefaultDkpText" inherits="GameFontNormal" text="WHOGETLOOT_LABLE_DEFAULT_DKP_TEXT" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTemplate" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-10"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border">
+			<BackgroundInsets>
+				<AbsInset bottom="4" left="4" right="4" top="4" />
+			</BackgroundInsets>
+			<EdgeSize>
+				<AbsValue val="16" />
+			</EdgeSize>
+		</Backdrop>
+		<Frames>
+			<Button inherits="UIPanelCloseButton" name="$parentCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="0" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>getglobal("whoGetLoot_importDkp"):Hide();</OnClick>
+				</Scripts>
+			</Button>
+
+
+			<EditBox name="$parentDefaultDKPEditBox" inherits="InputBoxTemplate" letters="3" numeric="true" autoFocus="false" text="4">
+				<Size>
+					<AbsDimension x="40" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentDefaultDkpText" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="10" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnEnterPressed>
+					</OnEnterPressed>
+				</Scripts>
+			</EditBox>
+			<EditBox name="$parentImportEdit" inherits="InputBoxTemplate" multiLine="true" autofocus="false">
+				<Size>
+					<AbsDimension x="480" y="480" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentDefaultDkpText" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="10" y="-10" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts />
+			</EditBox>
+			<Button name="$parentConfirmButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_CONFIRM">
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentCloseButton">
+						<Offset>
+							<AbsDimension x="-10" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="70" y="20"/>
+				</Size>
+				<Scripts>
+					<OnClick>
+						whoGetLoot_import_dkp_comfirm()
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts />
 	</Frame>
 
 </Ui>

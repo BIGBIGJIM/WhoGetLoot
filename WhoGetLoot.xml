@@ -3401,6 +3401,24 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
+				<FontString name="$parentImportDkpText" inherits="GameFontNormal" text="WHOGETLOOT_LABLE_IMPORT_DKP_TEXT" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentDefaultDkpText" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-10"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentImportDkpRoleNameMappingText" inherits="GameFontNormal" text="WHOGETLOOT_LABLE_IMPORT_DKP_ROLE_NAME_MAPPING_TEXT" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentImportDkpText" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="160" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
 			</Layer>
 		</Layers>
 		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border">
@@ -3424,8 +3442,6 @@
 					<OnClick>getglobal("whoGetLoot_importDkp"):Hide();</OnClick>
 				</Scripts>
 			</Button>
-
-
 			<EditBox name="$parentDefaultDKPEditBox" inherits="InputBoxTemplate" letters="3" numeric="true" autoFocus="false" text="4">
 				<Size>
 					<AbsDimension x="40" y="20"/>
@@ -3442,14 +3458,47 @@
 					</OnEnterPressed>
 				</Scripts>
 			</EditBox>
-			<EditBox name="$parentImportEdit" inherits="InputBoxTemplate" multiLine="true" autofocus="false">
+			<CheckButton name="$parentEnableIncludDefaultDKP" inherits="UICheckButtonTemplate">
 				<Size>
-					<AbsDimension x="480" y="480" />
+					<AbsDimension x="20" y="20"/>
 				</Size>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parentDefaultDkpText" relativePoint="BOTTOMLEFT">
+					<Anchor point="LEFT" relativeTo="$parentDefaultDKPEditBox" relativePoint="RIGHT">
 						<Offset>
-							<AbsDimension x="10" y="-10" />
+							<AbsDimension x="10" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						whoGetLoot_importDkpEnableIncludDefaultDKPText:SetText(WHOGETLOOT_LABLE_ENABLE_INCLUDE_DEFAULT_DKP_TEXT)
+					</OnLoad>
+					<OnClick>
+						whoGetLoot_import_data_includ_default_dkp_toggle(this:GetChecked())
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<EditBox name="$parentImportEdit" inherits="InputBoxTemplate" multiLine="true" autofocus="false">
+				<Size>
+					<AbsDimension x="200" y="400" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentImportDkpText" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="-10" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts />
+			</EditBox>
+			<EditBox name="$parentImportRoleNameMappingEdit" inherits="InputBoxTemplate" multiLine="true" autofocus="false">
+				<Size>
+					<AbsDimension x="200" y="400" />
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentImportDkpRoleNameMappingText" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="-10" />
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -3469,6 +3518,23 @@
 				<Scripts>
 					<OnClick>
 						whoGetLoot_import_dkp_comfirm()
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentCheckRoleNameButton" inherits="UIPanelButtonTemplate" text="WHOGETLOOT_BUTTON_CHECK_ROLE_NAME">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentConfirmButton">
+						<Offset>
+							<AbsDimension x="0" y="-10"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Size>
+					<AbsDimension x="140" y="20"/>
+				</Size>
+				<Scripts>
+					<OnClick>
+						whoGetLoot_import_data_role_name_check_tips()
 					</OnClick>
 				</Scripts>
 			</Button>

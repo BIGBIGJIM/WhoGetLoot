@@ -6,5 +6,5 @@
 ## Author: 1.0.0 BIGJIM https://github.com/BIGBIGJIM/WhoGetLoot
 ## DefaultState: disabled
 ## Dependencies:!Libs
-## SavedVariablesPerCharacter: whoGetLoot_settings, whoGetLoot_row_array, whoGetLoot_chock_in_row_array, whoGetLoot_import_dkp_data_array, whoGetLoot_default_dkp, whoGetLoot_import_dkp_time
+## SavedVariablesPerCharacter: whoGetLoot_settings, whoGetLoot_row_array, whoGetLoot_chock_in_row_array, whoGetLoot_import_dkp_data_array, whoGetLoot_default_dkp, whoGetLoot_import_dkp_time,whoGetLoot_import_includ_default_dkp_flag,whoGetLoot_import_dkp_data_role_name_mapping_array
 WhoGetLoot.xml

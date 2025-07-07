@@ -56,6 +56,9 @@ function whoGetLoot_OnLoad()
   whoGetLoot_import_dkp_data_array = {}
   whoGetLoot_default_dkp = 4
   whoGetLoot_import_dkp_time = ""
+  whoGetLoot_import_includ_default_dkp_flag = true
+  whoGetLoot_import_dkp_data_role_name_mapping_array = {}
+
 
   whoGetLoot_raid_table_hightlight_selected_index = 0
 
@@ -936,8 +939,24 @@ function whoGetLoot_init_import_dkp()
     local dataFrame = getglobal("whoGetLoot_importDkpImportEdit")
     dataFrame:SetText(importData)
   end
+  local mappingData = ""
+  if whoGetLoot_import_dkp_data_role_name_mapping_array then
+    for index in whoGetLoot_import_dkp_data_role_name_mapping_array do
+      local item = whoGetLoot_import_dkp_data_role_name_mapping_array[index]
+      mappingData = mappingData ..
+          item[WHOGETLOOT_INCLUDE_DKP_ROLE_NAME_MAPPING_NICKNAME_KEY] .. "," .. item[WHOGETLOOT_INCLUDE_DKP_ROLE_NAME_MAPPING_REALNAME_KEY] .. WHOGETLOOT_MSG_NEW_LINE
+    end
+    local dataFrame = getglobal("whoGetLoot_importDkpImportRoleNameMappingEdit")
+    dataFrame:SetText(mappingData)
+  end
   local defaultDkp = getglobal("whoGetLoot_importDkpDefaultDKPEditBox")
   defaultDkp:SetText(whoGetLoot_default_dkp)
+  local includeDefaultDkp = getglobal("whoGetLoot_importDkpEnableIncludDefaultDKP")
+  if whoGetLoot_import_includ_default_dkp_flag == nil then
+    whoGetLoot_import_includ_default_dkp_flag = false
+  end
+  includeDefaultDkp:SetChecked(whoGetLoot_import_includ_default_dkp_flag)
+
 end
 
 function whoGetLoot_import_dkp_toggle()
@@ -952,9 +971,28 @@ end
 function whoGetLoot_import_dkp_comfirm()
   local importFrame = getglobal("whoGetLoot_importDkp")
   local dataFrame = getglobal("whoGetLoot_importDkpImportEdit")
+  local mappingFrame = getglobal("whoGetLoot_importDkpImportRoleNameMappingEdit")
   local data = dataFrame:GetText()
+  local mappingData = mappingFrame:GetText()
   -- init data
   whoGetLoot_import_dkp_data_array = {}
+  whoGetLoot_import_dkp_data_role_name_mapping_array = {}
+  
+  if mappingData then
+    local mappingArray = string.gmatch(mappingData, "[^\n]+")
+    if mappingArray then
+      for line in mappingArray do
+        local nickname, realname = string.match(line, "(.-),(.*)")
+        local mapping = {}
+        mapping[WHOGETLOOT_INCLUDE_DKP_ROLE_NAME_MAPPING_NICKNAME_KEY] = nickname
+        mapping[WHOGETLOOT_INCLUDE_DKP_ROLE_NAME_MAPPING_REALNAME_KEY] = realname
+        if nickname and  nickname ~= "" and realname and realname ~= "" then
+          table.insert(whoGetLoot_import_dkp_data_role_name_mapping_array, mapping)
+        end
+      end
+    end
+  end
+
   if data then
     local lineArray = string.gmatch(data, "[^\n]+")
     if lineArray then
@@ -965,6 +1003,14 @@ function whoGetLoot_import_dkp_comfirm()
         rowInfo[WHOGETLOOT_KEY_ROLE_NAME] = roleName
         rowInfo[WHOGETLOOT_KEY_DKP] = numDkp
         if roleName and  roleName ~= "" and numDkp and numDkp ~= "" then
+          if whoGetLoot_import_dkp_data_role_name_mapping_array then
+            for mapping in whoGetLoot_import_dkp_data_role_name_mapping_array do
+              local item = whoGetLoot_import_dkp_data_role_name_mapping_array[mapping]
+              if roleName == item[WHOGETLOOT_INCLUDE_DKP_ROLE_NAME_MAPPING_NICKNAME_KEY] then
+                rowInfo[WHOGETLOOT_KEY_ROLE_NAME] = item[WHOGETLOOT_INCLUDE_DKP_ROLE_NAME_MAPPING_REALNAME_KEY]
+              end
+            end
+          end
           table.insert(whoGetLoot_import_dkp_data_array, rowInfo)
         end
       end
@@ -974,7 +1020,7 @@ function whoGetLoot_import_dkp_comfirm()
   whoGetLoot_default_dkp = tonumber(defaultDkp:GetText())
   local nowTime = date(WHOGETLOOT_MSG_TIME_FORMATE)
   whoGetLoot_import_dkp_time = nowTime
-  SendChatMessage(WHOGETLOOT_WHISPER_QUERY_ANNOUNCE, "RAID")
+  -- SendChatMessage(WHOGETLOOT_WHISPER_QUERY_ANNOUNCE, "RAID")
   importFrame:Hide()
 end
 
@@ -1028,7 +1074,11 @@ function whoGetLoot_query_loot_record(roleName)
       end
     end
     if findDkp then
-      extarDkp = findDkp
+      if whoGetLoot_import_includ_default_dkp_flag then
+        extarDkp = findDkp - defaultDkp
+      else
+        extarDkp = findDkp
+      end
     end
   end
 
@@ -1080,5 +1130,49 @@ function whoGetLoot_whisper_handle(msg, playerName)
   if msg == WHOGETLOOT_WHISPER_QUERY_DKP_KEY_1 or msg == WHOGETLOOT_WHISPER_QUERY_DKP_KEY_2 then
     local mesaage = whoGetLoot_query_loot_record(playerName)
     SendChatMessage(mesaage, "WHISPER", GetDefaultLanguage(), playerName)
+  end
+end
+
+function whoGetLoot_import_data_includ_default_dkp_toggle(checked)
+  whoGetLoot_import_includ_default_dkp_flag = checked
+end
+
+function whoGetLoot_import_data_role_name_check_tips()
+  if (GetNumRaidMembers() > 0) then
+    local tipsMessage = ""
+    for i = 1, GetNumRaidMembers(), 1 do
+      local realRoleName = UnitName("raid" .. i)
+      local findFlag = false
+
+      if whoGetLoot_import_dkp_data_array then
+        for importIndex in whoGetLoot_import_dkp_data_array do
+          local importItem = whoGetLoot_import_dkp_data_array[importIndex]
+          if realRoleName == importItem[WHOGETLOOT_KEY_ROLE_NAME] then
+            findFlag = true
+          end
+        end
+      end
+
+      if whoGetLoot_import_dkp_data_role_name_mapping_array then
+        for importIndex in whoGetLoot_import_dkp_data_role_name_mapping_array do
+          local importItem = whoGetLoot_import_dkp_data_role_name_mapping_array[importIndex]
+          if realRoleName == importItem[WHOGETLOOT_INCLUDE_DKP_ROLE_NAME_MAPPING_REALNAME_KEY] then
+            findFlag = true
+          end
+        end
+      end
+
+      if not findFlag then
+        tipsMessage = tipsMessage .. realRoleName .. ","
+      end
+    end
+
+    if tipsMessage ~= "" then
+      tipsMessage = WHOGETLOOT_IMPORT_ROLENAME_CHECK_TIPS_TEXT_1 .. tipsMessage
+      print(tipsMessage)
+    else 
+      print(WHOGETLOOT_IMPORT_ROLENAME_CHECK_TIPS_TEXT_2)
+      SendChatMessage(WHOGETLOOT_WHISPER_QUERY_ANNOUNCE, "RAID")
+    end
   end
 end
